@@ -1,0 +1,27 @@
+<ui:composition 
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    
+    <div id="layout-topbar" class="ShadowGray">
+    	<div id="layout-topbar-indent">
+        	<a href="#"><h:graphicImage name="images/logoInstituto.png" styleClass="Fleft" library="spark-layout" id="logo" class="Fleft"/></a>
+            <a href="#" id="mobile-menu-button" class="BordRad3 white ShowOnMobile"><i class="fa fa-bars"></i> Menu</a>
+            <a href="#" id="mobile-menu-button-gray" class="BordRad3 white ShowOnMobile"><i class="fa fa-caret-down"></i> Top Menu</a>
+            
+            <ul id="layout-topbar-menu">
+            	<li>
+                    <h:form>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  
+                        <p:commandLink actionListener="#{appController.logout()}" ajax="false" styleClass="Animated05"><i class="fa fa-sign-out"></i> Logout</p:commandLink>
+                    </h:form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+</ui:composition>
