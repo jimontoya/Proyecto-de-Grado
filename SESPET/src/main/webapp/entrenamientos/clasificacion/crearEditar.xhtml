@@ -1,0 +1,28 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ps="http://primefaces.org/spark"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <h:form id="dialogForm">      
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <p:dialog modal="true" widgetVar="clasificacionEntrenamientoDialog">
+            <p:panelGrid columns="2" id="panelDialog">
+                            <p:outputLabel value="Nombre " for="clasificacionEntrenamientoNombre"/>
+                            <p:inputText id="clasificacionEntrenamientoNombre" value="#{clasificacionEntrenamientoController.clasificacionEntrenamiento.nombre}" 
+                                         required="true" requiredMessage="El clasificacionEntrenamiento debe tener un nombre"/>
+                            <p:outputLabel value="Descripción " for="clasificacionEntrenamientoDesc"/>
+                            <p:inputTextarea id="clasificacionEntrenamientoDesc" value="#{clasificacionEntrenamientoController.clasificacionEntrenamiento.descripcion}" 
+                                         required="true" requiredMessage="El clasificacionEntrenamiento debe tener una descripcion"/>                           
+            </p:panelGrid>              
+            <p:separator/>
+            <center>
+                    <p:commandButton title="Guardar" actionListener="#{clasificacionEntrenamientoController.guardarOActualizar()}" icon="fa fa-save white"
+                                     update=":dialogForm:panelDialog, :form" oncomplete="closeIfSuccess(xhr, status, args, 'clasificacionEntrenamientoDialog')"/>
+            </center>
+        </p:dialog>
+        </h:form>
+
+</ui:composition>

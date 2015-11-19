@@ -115,7 +115,7 @@ public class AppController extends BaseController implements Serializable
         catch(AuthenticationException ae)
         {
             
-            addMessage("Usuario ó Password Incorrectos! Intente de Nuevo!", FacesMessage.SEVERITY_INFO);
+            addMessage("Usuario ó Password Incorrectos! Intente de Nuevo!", FacesMessage.SEVERITY_ERROR);
         }
     }
     

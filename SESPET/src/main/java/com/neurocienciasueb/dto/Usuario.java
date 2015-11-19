@@ -6,11 +6,16 @@
 package com.neurocienciasueb.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -69,11 +74,19 @@ public class Usuario implements UserDetails, Serializable{
     @Getter
     @Setter
     @Column(name = "estado",  nullable = false, length = 1)
-    private String estado;
+    private String estado;    
+    
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rol", nullable = false)
+    private Rol rol;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Rol> roles = new ArrayList<>(1);
+        roles.add(rol);
+        return roles;
     }
 
     @Override
@@ -83,7 +96,7 @@ public class Usuario implements UserDetails, Serializable{
     
     @Override
     public boolean isAccountNonExpired() {
-        return this.estado.equals("I");
+        return this.estado.equals("A");
     }
 
     @Override

@@ -16,11 +16,10 @@
  	
     <s:http use-expressions="true" auto-config="true">        
         <s:access-denied-handler error-page="/access-denied.xhtml" />
-        <s:intercept-url pattern="/analista/**" access="hasAnyRole('ROLE_Administrador','ROLE_Analista')" />
-        <s:intercept-url pattern="/coordinadores/**" access="hasAnyRole('ROLE_Administrador','ROLE_Coordinador')" />
-        <s:intercept-url pattern="/personas/**" access="hasAnyRole('ROLE_Administrador','ROLE_Operador')" />
-        <s:intercept-url pattern="/administracion/**" access="hasAnyRole('ROLE_Administrador')" />
         <s:intercept-url pattern="/login.xhtml" access="permitAll" />
+        <s:intercept-url pattern="/grupo/**" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/entrenamientos/**" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/layout/**" access="isAuthenticated()" />
 
         <s:form-login login-page="/login.xhtml" default-target-url="/empty-page.xhtml" authentication-failure-url="/login.xhtml" />            
         <s:logout logout-success-url="/login.xhtml" delete-cookies="JSESSIONID"

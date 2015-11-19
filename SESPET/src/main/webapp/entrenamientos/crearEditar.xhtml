@@ -1,0 +1,37 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ps="http://primefaces.org/spark"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <h:form id="dialogForm">      
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <p:dialog modal="true" widgetVar="entrenamientoDialog">
+            <p:panelGrid columns="2" id="panelDialog">
+                            <p:outputLabel value="Nombre " for="entrenamientoNombre"/>
+                            <p:inputText id="entrenamientoNombre" value="#{entrenamientoController.entrenamiento.nombre}" 
+                                         required="true" requiredMessage="El entrenamiento debe tener un nombre"/>
+                            <p:outputLabel value="Instrucciones " for="entrenamientoIns"/>
+                            <p:inputTextarea id="entrenamientoIns" value="#{entrenamientoController.entrenamiento.instrucciones}" 
+                                         required="true" requiredMessage="El entrenamiento debe tener instrucciones"/> 
+                            <p:outputLabel value="Código fuente " for="entrenamientoCod"/>
+                            <p:inputTextarea id="entrenamientoCod" value="#{entrenamientoController.entrenamiento.codigo}" 
+                                         required="true" requiredMessage="El entrenamiento debe tener un código fuente"/>
+                            <p:outputLabel value="Clasificación " for="clasifMenu"/>
+                            <p:selectOneMenu converter="ClasificacionEntrenamientoConverter" value="#{entrenamientoController.entrenamiento.clasificacionEntrenamiento}"
+                                             var="ent" id="clasifMenu" required="true" requiredMessage="El entrenamiento debe tener una clasificación" style="width: 90%">
+                                <f:selectItems value="#{clasificacionEntrenamientoController.listarTodo()}" var="ce" itemLabel="#{ce.nombre}" itemValue="#{ce}"/>
+                                
+                            </p:selectOneMenu>
+            </p:panelGrid>              
+            <p:separator/>
+            <center>
+                    <p:commandButton title="Guardar" actionListener="#{entrenamientoController.guardarOActualizar()}" icon="fa fa-save white"
+                                     update=":dialogForm:panelDialog, :form" oncomplete="closeIfSuccess(xhr, status, args, 'entrenamientoDialog')"/>
+            </center>
+        </p:dialog>
+        </h:form>
+
+</ui:composition>
