@@ -510,3 +510,10 @@ function closeIfSuccess(xhr, status, args, name)
             PF(name).hide();
     }
 }
+
+function beginIfSuccess(xhr, status, args, name, tab)
+{
+    if(args.success){
+        PF(name).loadStep(tab, true);
+    }
+}

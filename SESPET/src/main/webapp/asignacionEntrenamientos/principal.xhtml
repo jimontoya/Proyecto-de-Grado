@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/template.xhtml">
+    
+    <ui:define name="content">
+        <div class="layout-portlets-box">
+            <div class="Container100">
+                <div class="ContainerIndent">
+                    <h1 class="TexAlCenter Fs18 gray">Asignación de entrenamientos</h1>
+                    <div class="EmptyBox40"></div>
+                    <h:form id="form"> 
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                                 
+                        <p:growl id="msgs" autoUpdate="true"/>   
+                        <p:wizard backLabel="Anterior" nextLabel="Siguiente" flowListener="#{asignacionEntrenamientoController.onFlowProcess}"
+                                  widgetVar="asignacionWizard">
+                            <p:tab title="Seleccionar entrenamiento" id="tab1">
+                                <p:dataTable value="#{entrenamientoController.listarTodo()}" var="entrenamiento"
+                                             emptyMessage="Aún no han encontrado entrenamientos" selectionMode="single" selection="#{asignacionEntrenamientoController.asignacionEntrenamientoUsuario.entrenamiento}"
+                                             rowKey="#{entrenamiento.id}" paginatorPosition="bottom" rows="5" paginator="true" rowsPerPageTemplate="5,10,15">
+                                    <p:column headerText="Nombre">
+                                        <p:outputLabel value="#{entrenamiento.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Instrucciones">
+                                        <p:outputLabel value="#{entrenamiento.instrucciones}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                            <p:tab title="Ajustar variables" id="tab2">
+                                    <ui:repeat value="#{asignacionEntrenamientoController.valoresVariablesEntrenamiento}"
+                                           var="varEntre">   
+                                        <center>
+                                        <p:separator/>
+                                        <p:outputLabel value="#{varEntre.variableEntrenamiento.nombre}"/> 
+                                        <p:spacer width="10"/>
+                                        <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"/>
+                                        <p:separator/>
+                                        </center>
+                                </ui:repeat>
+                            </p:tab>
+                            <p:tab title="Seleccionar pacientes" id="tab3">                                
+                                <p:commandButton value="Buscar por nombre o documento" onclick="PF('busquedaPacientePorNombreODocumentoDialog').show();"/>
+                                <p:separator/>
+                                <p:dataTable value="#{asignacionEntrenamientoController.seleccionadosPacientes}" var="pa"
+                                             emptyMessage="Aún no ha seleccionado pacientes" id="seleccionPacientesTable"
+                                             paginatorPosition="bottom" rows="5" paginator="true" rowsPerPageTemplate="5,10,15" >
+                                    <p:column headerText="Nombre">
+                                        <p:outputLabel value="#{pa.nombreCompleto}"/>
+                                    </p:column> 
+                                    <p:column headerText="Documento">
+                                        <p:outputLabel value="#{pa.documentoIdentidad}"/>
+                                    </p:column>
+                                    <p:column style="width: 10%; text-align: center">
+                                        <p:commandButton actionListener="#{asignacionEntrenamientoController.removerPaciente(pa)}"
+                                                         icon="fa fa-trash white" title="Remover" update="seleccionPacientesTable"/>
+                                    </p:column>
+                                </p:dataTable>  
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Asignar" icon="fa fa-save white" actionListener="#{asignacionEntrenamientoController.asignar()}"
+                                                     oncomplete="beginIfSuccess(xhr, status, args, 'asignacionWizard', 'tab1')"/>
+                                </center>
+                            </p:tab>
+                        </p:wizard>                                              
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+    
+    <ui:define name="dialog">
+        <ui:include src="/layout/eliminarConfirmacion.xhtml"/>
+        <h:form id="busquedaPacientePorNombreODocumentoForm">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+            <p:dialog widgetVar="busquedaPacientePorNombreODocumentoDialog" modal="true">
+                <center>
+                <p:inputText id="busqueda" value="#{asignacionEntrenamientoController.busquedaUsuario}"/>
+                <p:spacer width="10"/>
+                <p:commandButton update="pacientesTable" value="Buscar" actionListener="#{asignacionEntrenamientoController.filtrarPacientesPorNombreODocumento()}"/>
+                </center>
+                <p:separator/>
+                <p:dataTable value="#{asignacionEntrenamientoController.pacientesFiltrados}" var="paciente"
+                             id="pacientesTable" emptyMessage="No se han encontrado pacientes" paginatorPosition="bottom"
+                                     rows="5" paginator="true" rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="Nombre">
+                        <p:outputLabel value="#{paciente.nombreCompleto}"/>
+                    </p:column>
+                    <p:column headerText="Documento">
+                        <p:outputLabel value="#{paciente.documentoIdentidad}"/>
+                    </p:column>  
+                    <p:column style="width: 10%; text-align: center">
+                        <p:commandButton actionListener="#{asignacionEntrenamientoController.anadirPaciente(paciente)}" icon="ui-icon-plus" title="Seleccionar"
+                                         update=":form:seleccionPacientesTable, pacientesTable "/>
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

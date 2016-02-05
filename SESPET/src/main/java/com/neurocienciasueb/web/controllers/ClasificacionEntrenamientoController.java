@@ -5,6 +5,7 @@
  */
 package com.neurocienciasueb.web.controllers;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.neurocienciasueb.dto.ClasificacionEntrenamiento;
 import com.neurocienciasueb.service.ClasificacionEntrenamientoService;
 import java.io.Serializable;
@@ -48,8 +49,12 @@ public class ClasificacionEntrenamientoController extends BaseController impleme
     }
     
     public void eliminar(ClasificacionEntrenamiento clasificacionEntrenamiento){
-        service.eliminar(clasificacionEntrenamiento);
-        addMessage("Se ha eliminado correctamente la clasificacion", FacesMessage.SEVERITY_INFO);
+        try {
+            service.eliminar(clasificacionEntrenamiento);
+            addMessage("Se ha eliminado correctamente la clasificacion", FacesMessage.SEVERITY_INFO);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            addMessage("No es posible eliminar la clasificacion "+ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
     }
 
     public ClasificacionEntrenamiento getClasificacionEntrenamiento() {

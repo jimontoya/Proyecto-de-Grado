@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -82,6 +83,9 @@ public class Usuario implements UserDetails, Serializable{
     @JoinColumn(name = "rol", nullable = false)
     private Rol rol;
 
+    public Usuario() {
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<Rol> roles = new ArrayList<>(1);
@@ -89,6 +93,20 @@ public class Usuario implements UserDetails, Serializable{
         return roles;
     }
 
+    public Usuario(Usuario us) {
+        this.correoElectronico = us.correoElectronico;
+        this.documentoIdentidad = us.documentoIdentidad;
+        this.estado = us.estado;
+        this.fechaNacimiento = us.fechaNacimiento;
+        this.nombreCompleto = us.nombreCompleto;
+        this.password = us.password;
+        this.rol = us.rol;
+        this.telefono = us.telefono;
+        this.userName = us.userName;
+    }
+
+    
+    
     @Override
     public String getUsername() {
         return this.userName;
@@ -113,5 +131,29 @@ public class Usuario implements UserDetails, Serializable{
     public boolean isEnabled() {
         return this.estado.equals("A");
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.userName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.userName, other.userName)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     
 }

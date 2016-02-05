@@ -5,6 +5,7 @@
  */
 package com.neurocienciasueb.service;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.neurocienciasueb.dao.ClasificacionEntrenamientoDao;
 import com.neurocienciasueb.dto.ClasificacionEntrenamiento;
 import java.io.Serializable;
@@ -18,22 +19,25 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class ClasificacionEntrenamientoService implements Serializable{
+public class ClasificacionEntrenamientoService implements Serializable, ServicioGenerico<ClasificacionEntrenamiento>{
     
     private static final long serialVersionUID = 9023531231595557306L;
     
     @Autowired
     private ClasificacionEntrenamientoDao service;
     
+    @Override
     public List<ClasificacionEntrenamiento> listarTodo(){
         return service.findAll();
     }
     
+    @Override
     public ClasificacionEntrenamiento guardarOActualizar(ClasificacionEntrenamiento clasificacionEntrenamiento){
         return service.saveAndFlush(clasificacionEntrenamiento);
     }
     
-    public void eliminar(ClasificacionEntrenamiento clasificacionEntrenamiento){
+    @Override
+    public void eliminar(ClasificacionEntrenamiento clasificacionEntrenamiento) throws MySQLIntegrityConstraintViolationException{
         service.delete(clasificacionEntrenamiento);
     }
     

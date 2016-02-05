@@ -5,6 +5,7 @@
  */
 package com.neurocienciasueb.web.controllers;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.neurocienciasueb.dto.Grupo;
 import com.neurocienciasueb.service.GrupoService;
 import java.io.Serializable;
@@ -48,8 +49,12 @@ public class GrupoController extends BaseController implements Serializable{
     }
     
     public void eliminar(Grupo grupo){
-        service.eliminar(grupo);
-        addMessage("Se ha eliminado correctamente el grupo", FacesMessage.SEVERITY_INFO);
+        try {
+            service.eliminar(grupo);
+            addMessage("Se ha eliminado correctamente el grupo", FacesMessage.SEVERITY_INFO);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            addMessage("No es posible eliminar el grupo "+ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
     }
 
     public Grupo getGrupo() {

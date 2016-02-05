@@ -51,6 +51,13 @@ public abstract class RegularIdEntity implements Serializable{
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "RegularIdEntity{" + "id=" + id + '}';
+    }
+    
+    
     
     
     
