@@ -35,6 +35,8 @@
                                         <p:separator/>
                                         <p:outputLabel value="#{varEntre.variableEntrenamiento.nombre}"/> 
                                         <p:spacer width="10"/>
+                                        <p:outputLabel value="#{varEntre.variableEntrenamiento.descripcion}"/> 
+                                        <p:spacer width="10"/>
                                         <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"/>
                                         <p:separator/>
                                         </center>
@@ -59,6 +61,8 @@
                                 </p:dataTable>  
                                 <p:separator/>
                                 <center>
+                                    <p:outputLabel value="Repeticiones: "/>
+                                    <p:inputText title="Repeticiones" value="#{asignacionEntrenamientoController.repeticiones}"/>                                    
                                     <p:commandButton value="Asignar" icon="fa fa-save white" actionListener="#{asignacionEntrenamientoController.asignar()}"
                                                      oncomplete="beginIfSuccess(xhr, status, args, 'asignacionWizard', 'tab1')"/>
                                 </center>

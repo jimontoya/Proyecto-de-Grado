@@ -11,7 +11,6 @@ import com.neurocienciasueb.dto.ValorVariableEntrenamiento;
 import com.neurocienciasueb.dto.ValorVariableEntrenamientoDTO;
 import com.neurocienciasueb.dto.VariableEntrenamiento;
 import com.neurocienciasueb.service.AsignacionEntrenamientoUsuarioService;
-import com.neurocienciasueb.service.EntrenamientoService;
 import com.neurocienciasueb.service.UsuarioService;
 import com.neurocienciasueb.service.ValorVariableEntrenamientoService;
 import com.neurocienciasueb.service.VariableEntrenamientoService;
@@ -48,6 +47,8 @@ public class AsignacionEntrenamientoController extends BaseController implements
     
     private String busquedaUsuario;
     
+    private int repeticiones=1;
+    
     private AsignacionEntrenamientoUsuario asignacionEntrenamientoUsuario;
     
     private List<Usuario> seleccionadosPacientes;
@@ -81,6 +82,7 @@ public class AsignacionEntrenamientoController extends BaseController implements
     
     public void asignar(){
         if(!seleccionadosPacientes.isEmpty()){
+            for(int i =0; i<repeticiones;i++){
             for(Usuario aux:seleccionadosPacientes){
                 asignacionEntrenamientoUsuario.setUsuario(aux);
                 asignacionEntrenamientoUsuario.setRealizado("N");
@@ -93,7 +95,9 @@ public class AsignacionEntrenamientoController extends BaseController implements
                     valorVariableEntrenamientoService.guardarOActualizar(vveDTO);
                 }
                 asignacionEntrenamientoUsuario.setId(0);
-            }            
+            }       
+            }
+            repeticiones = 1;
             seleccionadosPacientes = new ArrayList<>();
             addCallbackParam("success", true);
             addMessage("Se ha asignado correctamente", FacesMessage.SEVERITY_INFO);
@@ -155,6 +159,14 @@ public class AsignacionEntrenamientoController extends BaseController implements
 
     public void setAsignacionEntrenamientoUsuario(AsignacionEntrenamientoUsuario asignacionEntrenamientoUsuario) {
         this.asignacionEntrenamientoUsuario = asignacionEntrenamientoUsuario;
+    }
+
+    public int getRepeticiones() {
+        return repeticiones;
+    }
+
+    public void setRepeticiones(int repeticiones) {
+        this.repeticiones = repeticiones;
     }
     
     

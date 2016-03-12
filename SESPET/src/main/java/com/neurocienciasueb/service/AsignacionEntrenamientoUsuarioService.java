@@ -40,6 +40,16 @@ public class AsignacionEntrenamientoUsuarioService implements Serializable, Serv
         service.delete(entidad);
     }
     
+    public List<AsignacionEntrenamientoUsuario> findByUsuarioIdAndRealizadoOrderByOrdenAsc(String username, String realizado){
+        if(realizado.equals("S") || realizado.equals("N")){
+            return service.findByUsuarioUserNameAndRealizadoOrderByOrdenAsc(username, realizado);
+        } else {
+            List lista = service.findByUsuarioUserNameAndRealizadoOrderByOrdenAsc(username, "S");
+            lista.addAll(service.findByUsuarioUserNameAndRealizadoOrderByOrdenAsc(username, "N"));
+            return lista;
+        }
+    }
+    
     public AsignacionEntrenamientoUsuario findFirstByUsuarioIdAndRealizadoOrderByOrdenAsc(String username, String realizado){
         return service.findFirstByUsuarioUserNameAndRealizadoOrderByOrdenAsc(username, realizado);
     }

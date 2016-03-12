@@ -79,7 +79,7 @@
   
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>spark-orange</param-value>
+        <param-value>spark</param-value>
     </context-param>
 
     <filter>

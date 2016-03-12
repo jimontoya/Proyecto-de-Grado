@@ -6,6 +6,7 @@
 package com.neurocienciasueb.dao;
 
 import com.neurocienciasueb.dto.AsignacionEntrenamientoUsuario;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,5 @@ public interface AsignacionEntrenamientoUsuarioDao extends JpaRepository<Asignac
     
     AsignacionEntrenamientoUsuario findFirstByUsuarioUserNameAndRealizadoOrderByOrdenAsc(String username, String realizado);
     
+     List<AsignacionEntrenamientoUsuario> findByUsuarioUserNameAndRealizadoOrderByOrdenAsc(String username, String realizado);
 }

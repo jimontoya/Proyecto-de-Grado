@@ -24,4 +24,6 @@ public interface ValorVariableEntrenamientoDao extends JpaRepository<ValorVariab
             + "where vve.id_asignacion = ?1 and ve.tipo_variable = ?2", nativeQuery = true)
     List<String[]> arregloParametros(int idAsignacion, String tipo);
     
+    List<ValorVariableEntrenamientoDTO> findByAsignacionEntrenamientoUsuario(int idAsignacionEntrenamiento);
+    
 }

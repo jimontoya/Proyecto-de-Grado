@@ -8,8 +8,10 @@ package com.neurocienciasueb.service;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.neurocienciasueb.dao.ValorVariableEntrenamientoDao;
 import com.neurocienciasueb.dao.VariableEntrenamientoDao;
+import com.neurocienciasueb.dto.ValorVariableEntrenamiento;
 import com.neurocienciasueb.dto.ValorVariableEntrenamientoDTO;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,17 @@ public class ValorVariableEntrenamientoService implements Serializable, Servicio
     
     @Autowired
     private VariableEntrenamientoDao variableEntrenamientoDao;
+    
+    public List<ValorVariableEntrenamiento> findByAsignacionEntrenamientoUsuario(int idAsignacionEntrenamiento){
+        List<ValorVariableEntrenamiento> lista = new ArrayList<>();
+        for(ValorVariableEntrenamientoDTO aux: service.findByAsignacionEntrenamientoUsuario(idAsignacionEntrenamiento)){
+           ValorVariableEntrenamiento temp = new ValorVariableEntrenamiento();
+           temp.setVariableEntrenamiento(variableEntrenamientoDao.findFirstById(aux.getVariableEntrenamiento()));
+           temp.setValor(aux.getValor());
+           lista.add(temp);
+        }
+        return lista;
+    }
 
     @Override
     public List<ValorVariableEntrenamientoDTO> listarTodo() {

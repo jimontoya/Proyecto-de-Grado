@@ -22,4 +22,5 @@ public interface VariableEntrenamientoDao extends JpaRepository<VariableEntrenam
     
     public List<VariableEntrenamiento> findByEntrenamientoIdAndTipoVariable(int indEntrenamiento, String tipoVariable);
     
+    public VariableEntrenamiento findFirstById(int id);
 }
