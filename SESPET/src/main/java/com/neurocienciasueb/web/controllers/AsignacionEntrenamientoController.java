@@ -73,6 +73,7 @@ public class AsignacionEntrenamientoController extends BaseController implements
                 for(VariableEntrenamiento ve: variableEntrenamientoService.findByEntrenamientoIdAndTipoVariable(asignacionEntrenamientoUsuario.getEntrenamiento().getId(),"E")){
                     ValorVariableEntrenamiento aux = new ValorVariableEntrenamiento();
                     aux.setVariableEntrenamiento(ve);
+                    aux.setValor(ve.getValorDefecto());
                     valoresVariablesEntrenamiento.add(aux);
                 }
             }

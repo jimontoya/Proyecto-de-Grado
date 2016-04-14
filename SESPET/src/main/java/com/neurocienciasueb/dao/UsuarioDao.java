@@ -13,6 +13,8 @@ public interface UsuarioDao extends JpaRepository<Usuario, String>
 {
     Usuario findFirstByUserName(String userName);
     
+    List<Usuario> findByRolId(int idRol);
+    
     @Query(value = "SELECT * FROM usuario u where u.rol = 3 and u.estado = 'A' "
             + "AND (lower(u.nombre_completo) LIKE  lower(concat('%',?1,'%')) "
             + "OR lower(u.documento_identidad) like lower(concat('%',?1,'%')))", nativeQuery = true)

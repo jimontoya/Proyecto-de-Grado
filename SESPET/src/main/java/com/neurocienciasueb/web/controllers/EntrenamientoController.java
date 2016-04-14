@@ -55,9 +55,15 @@ public class EntrenamientoController extends BaseController implements Serializa
     
     public void limpiarVariableEntrenamiento(){
         this.variableEntrenamiento = new VariableEntrenamiento();
+        variableEntrenamiento.setTipoDato("color");
+        variableEntrenamiento.setTipoVariable("E");
     }
     
     public List<Entrenamiento> listarTodo(){
+        return service.listarActivos();
+    }
+    
+    public List<Entrenamiento> listarTodoAI(){
         return service.listarTodo();
     }
     
@@ -71,6 +77,7 @@ public class EntrenamientoController extends BaseController implements Serializa
     }
     
     public void guardarOActualizar(){
+        entrenamiento.setEstado("A");
         service.guardarOActualizar(entrenamiento);
         addMessage("Se ha guardado correctamente el entrenamiento "+entrenamiento.getNombre(), FacesMessage.SEVERITY_INFO);
         addCallbackParam("success", true);
@@ -82,6 +89,15 @@ public class EntrenamientoController extends BaseController implements Serializa
         addMessage("Se ha guardado correctamente la variable "+this.variableEntrenamiento.getNombre(), FacesMessage.SEVERITY_INFO);
         this.variableEntrenamiento = new VariableEntrenamiento();
         addCallbackParam("success", true);
+    }
+    
+    public void cambiarEstado(Entrenamiento ent){
+        if(ent.getEstado().equals("A")){
+            ent.setEstado("I");
+        }else{
+            ent.setEstado("A");
+        }
+        service.guardarOActualizar(ent);
     }
     
     public void eliminar(Entrenamiento entrenamiento){

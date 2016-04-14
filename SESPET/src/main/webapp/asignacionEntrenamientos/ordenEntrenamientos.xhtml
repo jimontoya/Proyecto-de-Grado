@@ -13,7 +13,7 @@
                     <div class="EmptyBox40"></div>
                     <h:form id="form"> 
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                                 
-                        <p:growl id="msgs" autoUpdate="true"/>   
+                        <p:messages id="msgs" autoUpdate="true"/>   
                         <p:panelGrid columns="2" id="panelInfo">
                         <p:commandButton value="Buscar paciente" onclick="PF('busquedaPacientePorNombreODocumentoDialog').show();"/>
                         <p:outputLabel value="#{ordenEntrenamientosController.pacienteSeleccionado.nombreCompleto}" 
@@ -35,9 +35,14 @@
                             <p:column headerText="Orden" filterBy="#{AsigEntrenamiento.orden}" filterMatchMode="contains">
                                 <center>
                                 <h:outputText value="#{AsigEntrenamiento.orden}  "/>
-                                <p:spacer width="20"/>
-                                <p:commandButton icon="fa fa-edit white" title="Cambiar orden" onclick="PF('ordenDialog').show();" update=":ordenDialogForm:inOr"
+                                </center>
+                            </p:column>
+                            <p:column headerText="Acciones" >
+                                <center>                                
+                                <p:commandButton icon="fa fa-bars white" title="Cambiar orden" onclick="PF('ordenDialog').show();" update=":ordenDialogForm:inOr"
                                                  actionListener="#{ordenEntrenamientosController.setAsignacionEntrenamientoUsuarioSeleccionado(AsigEntrenamiento)}"/>
+                                <p:commandButton icon="fa fa-times white" title="Remover asignación" update=":form"
+                                                 actionListener="#{ordenEntrenamientosController.eliminarAsignacion(AsigEntrenamiento)}"/>
                                 </center>
                             </p:column>
                             <p:rowExpansion>

@@ -25,13 +25,14 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <h1 class="TexAlCenter Fs18 gray">#{pacienteController.entrenamientoActual!=null?pacienteController.entrenamientoActual.nombre:'Aún no tiene entrenamientos asignados'}</h1>
                         <f:event type="preRenderView" listener="#{pacienteController.aRealizar()}"/>                        
-                        <p:growl id="msgs" autoUpdate="true"/>   
+                        <p:messages id="msgs" autoUpdate="true"/>   
                         <p:remoteCommand name="remoteChangeCommand" process="hiddenButton" />
-                        <p:remoteCommand name="terminado" actionListener="#{pacienteController.terminar()}"/>
+                        <p:remoteCommand name="terminadoEvaluacion" actionListener="#{pacienteController.terminar()}"/>
+                        <p:remoteCommand name="terminadoEntrenamiento" actionListener="#{pacienteController.terminarEntrenamiento()}"/>
                         <p:outputLabel value="#{pacienteController.entrenamientoActual.instrucciones}"/>
                         <h:inputHidden id="hiddenButton" value="#{pacienteController.salida}"/>
                         <p:separator/>
-                        <p:commandButton type="button" onclick="iniciar();" value="Iniciar" widgetVar="botonInicio" rendered="#{pacienteController.entrenamientoActual!=null}"/>
+                        <p:commandButton id="botonInicio" type="button" onclick="iniciar();" value="Iniciar" widgetVar="botonInicio" rendered="#{pacienteController.entrenamientoActual!=null}"/>
                         <br/>
                         <p:separator/>
                         <p:outputLabel escape="false" value="#{pacienteController.codigo()}" rendered="#{pacienteController.entrenamientoActual!=null}"/>

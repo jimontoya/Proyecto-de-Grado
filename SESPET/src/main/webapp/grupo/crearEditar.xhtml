@@ -8,7 +8,8 @@
     
     <h:form id="dialogForm">      
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-            <p:dialog modal="true" widgetVar="grupoDialog">
+            <p:dialog modal="true" widgetVar="grupoDialog" >
+                <p:messages autoUpdate="true" closable="true"/>    
             <p:panelGrid columns="2" id="panelDialog">
                             <p:outputLabel value="Nombre " for="grupoNombre"/>
                             <p:inputText id="grupoNombre" value="#{grupoController.grupo.nombre}" 

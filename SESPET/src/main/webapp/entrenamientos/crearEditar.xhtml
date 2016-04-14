@@ -8,26 +8,31 @@
     
     <h:form id="dialogForm">      
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-        <p:dialog modal="true" widgetVar="entrenamientoDialog" onShow="PF('entrenamientoWizard').loadStep('info', true)">
+        <p:dialog modal="true" widgetVar="entrenamientoDialog" onShow="PF('entrenamientoWizard').loadStep('info', true)"
+                   width="80%">
+            <p:messages autoUpdate="true" closable="true"/>
                 <p:ajax event="close" update=":form"/>
                 <p:wizard flowListener="#{entrenamientoController.onFlowProcess}" nextLabel="Siguiente" backLabel="Anterior" step="info"
                           widgetVar="entrenamientoWizard">
                     <p:tab title="Información general" id="info">                   
                         <p:panelGrid columns="2" id="panelDialog" style="width: 100%; height: 100%" >
-                            <p:outputLabel value="Nombre " for="entrenamientoNombre"/>
+                          
+                            <p:outputLabel value="Nombre " for="entrenamientoNombre" />                        
                             <p:inputText id="entrenamientoNombre" value="#{entrenamientoController.entrenamiento.nombre}" 
-                                         required="true" requiredMessage="El entrenamiento debe tener un nombre"/>
+                                         required="true" requiredMessage="El entrenamiento debe tener un nombre" style="width: 80%"/>
                             <p:outputLabel value="Instrucciones " for="entrenamientoIns"/>
                             <p:inputTextarea id="entrenamientoIns" value="#{entrenamientoController.entrenamiento.instrucciones}" 
-                                         required="true" requiredMessage="El entrenamiento debe tener instrucciones"/> 
+                                         required="true" requiredMessage="El entrenamiento debe tener instrucciones" style="width: 80%"/> 
                             <p:outputLabel value="Código fuente " for="entrenamientoCod"/>
-                            <p:scrollPanel mode="native" style="width:100%;height:200px">
-                            <p:inputTextarea id="entrenamientoCod" value="#{entrenamientoController.entrenamiento.codigo}" style="width: 100%; height: 100%"
-                                         required="true" requiredMessage="El entrenamiento debe tener un código fuente"/>
+                            <p:scrollPanel style="width:95%;height:150px" >
+                                <p:inputTextarea id="entrenamientoCod"  value="#{entrenamientoController.entrenamiento.codigo}" style="width: 90%;"
+                                          required="true" requiredMessage="Debe tener un código" />
                             </p:scrollPanel>
+                            
+                            
                             <p:outputLabel value="Clasificación " for="clasifMenu"/>
                             <p:selectOneMenu converter="ClasificacionEntrenamientoConverter" value="#{entrenamientoController.entrenamiento.clasificacionEntrenamiento}"
-                                             id="clasifMenu" required="true" requiredMessage="El entrenamiento debe tener una clasificación" style="width: 90%">
+                                             id="clasifMenu" required="true" requiredMessage="El entrenamiento debe tener una clasificación" style="width: 80%">
                                 <f:selectItems value="#{clasificacionEntrenamientoController.listarTodo()}" var="ce" itemLabel="#{ce.nombre}" itemValue="#{ce}"/>                                
                             </p:selectOneMenu>
                         </p:panelGrid>  
@@ -41,7 +46,10 @@
                                 <h:outputText value="#{varent.nombre}"/>
                             </p:column>
                             <p:column headerText="Referencia">
-                                <h:outputText value="#{varent.tipoDato}"/>
+                                <h:outputText value="#{varent.referencia}"/>
+                            </p:column>
+                            <p:column headerText="Valor por defecto">
+                                <h:outputText value="#{varent.valorDefecto}"/>
                             </p:column>
                             <p:column headerText="Tipo">
                                 <h:outputText value="#{varent.tipoVariable.equals('E')? 'Entrada':'Salida'}"/>

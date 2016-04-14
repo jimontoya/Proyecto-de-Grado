@@ -64,12 +64,19 @@ public class PacienteController extends BaseController implements Serializable{
         }
     }
     
+    public void terminarEntrenamiento(){
+        asignacionEntrenamientoUsuario.setRealizado("S");
+            asignacionEntrenamientoUsuarioService.guardarOActualizar(asignacionEntrenamientoUsuario);
+            aRealizar();
+            RequestContext.getCurrentInstance().update("form");
+    }
+    
     public void terminar(){        
             for(VariableEntrenamiento aux : variableEntrenamientoService.findByEntrenamientoIdAndTipoVariable(asignacionEntrenamientoUsuario.getEntrenamiento().getId(),"S")){
                 ValorVariableEntrenamientoDTO temp = new ValorVariableEntrenamientoDTO();
                 temp.setAsignacionEntrenamientoUsuario(asignacionEntrenamientoUsuario.getId());
                 temp.setVariableEntrenamiento(aux.getId());
-                temp.setValor(buscarValor(aux.getTipoDato()));
+                temp.setValor(buscarValor(aux.getReferencia()));
                 valorVariableEntrenamientoService.guardarOActualizar(temp);
             }
             salida = new String();

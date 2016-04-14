@@ -46,12 +46,22 @@ public class VariableEntrenamiento extends RegularIdEntity implements Serializab
     
     @Getter
     @Setter
-    @Column(name = "tipo_dato", nullable = false, length = 45)
-    private String tipoDato;
+    @Column(name = "referencia", nullable = false, length = 45)
+    private String referencia;
     
     @Getter
     @Setter
     @Column(name = "tipo_variable", nullable = false, length = 1)
     private String tipoVariable;
+    
+    @Getter
+    @Setter
+    @Column(name = "tipo_dato", nullable = false, length = 10)
+    private String tipoDato;
+    
+    @Getter
+    @Setter
+    @Column(name = "valor_defecto", nullable = true, length = 50)
+    private String ValorDefecto;
     
 }

@@ -13,6 +13,7 @@ import com.neurocienciasueb.dto.ValorVariableEntrenamientoDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,37 @@ public class ValorVariableEntrenamientoService implements Serializable, Servicio
     
     public List<String[]> arregloParametros(int idAsignacion, String tipo){
         return service.arregloParametros(idAsignacion, tipo);
+    }
+    
+    public List<String> valoresParaVariableEntrenamiento(int idVariableEntrenamiento){
+        return service.valoresParaVariableEntrada(idVariableEntrenamiento);
+    }
+    
+    public List<String> valoresVariableContinua(int idVariableEntrenamiento, int intervalos){
+        Float max = service.maxParaVariableSalida(idVariableEntrenamiento),
+                min = service.minParaVariableSalida(idVariableEntrenamiento),
+                intVal;
+        if(max ==null || min ==null) {
+            return null;
+        }else{
+            min-=1;
+            intVal = (Math.abs(min-max))/intervalos;
+        }
+        List<String> rel = new ArrayList();
+        rel.add(String.valueOf(intVal));
+        for(int i=0; i< intervalos;i++){
+            min+=intVal;
+            rel.add(String.valueOf(min));            
+        }
+        return rel;
+    }
+    
+    public int resultadosContinuosPorPacienteVariable(String usuario, int idVariableEntrenamientoEntrada, String valorEntrada,int idVariableEntrenamientoSalida, float mayor, float menor){
+        return service.resultadosIntervaloPorPacienteVariable(usuario, idVariableEntrenamientoEntrada, valorEntrada, idVariableEntrenamientoSalida, mayor, menor);
+    }
+    
+    public int resultadosDiscretosPorPacienteVariable(String usuario, int idVariableEntrenamientoEntrada, String valorEntrada,int idVariableEntrenamientoSalida, String valorSalida ){
+        return service.resultadosDiscretosPorPacienteVariable(usuario, idVariableEntrenamientoEntrada, valorEntrada, idVariableEntrenamientoSalida, valorSalida);
     }
     
 }

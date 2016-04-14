@@ -22,6 +22,10 @@
         <s:intercept-url pattern="/entrenamientos/**" access="hasAnyRole('ROLE_Administrador')" />
         <s:intercept-url pattern="/layout/**" access="isAuthenticated()" />
         <s:intercept-url pattern="/paciente/**" access="isAuthenticated()" />
+        <s:intercept-url pattern="/visualizacionDatos/**" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/usuario/crearEditar.xhtml" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/usuario/listar.xhtml" access="hasAnyRole('ROLE_Administrador')" />
+        <s:intercept-url pattern="/usuario/listarPacientes.xhtml" access="hasAnyRole('ROLE_Investigador')" />
 
         <s:form-login login-page="/login.xhtml" default-target-url="/empty-page.xhtml" authentication-failure-url="/login.xhtml" />            
         <s:logout logout-success-url="/login.xhtml" delete-cookies="JSESSIONID"

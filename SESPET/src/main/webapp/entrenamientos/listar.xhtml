@@ -12,12 +12,12 @@
                     <h1 class="TexAlCenter Fs18 gray">Entrenamientos</h1>
                     <div class="EmptyBox40"></div>
                     <h:form id="form"> 
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                                  
-                        <p:growl id="msgs" autoUpdate="true"/>    
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+                        <p:messages id="msgs" closable="true"/>  
                         <p:commandButton value="Crear nuevo entrenamiento" actionListener="#{entrenamientoController.limpiar()}"
                                          oncomplete="PF('entrenamientoDialog').show();" update=":dialogForm:panelDialog"/>
                         <p:separator/>
-                        <p:dataTable id="entrenamientosTable" var="entrenamiento" value="#{entrenamientoController.listarTodo()}" paginatorPosition="bottom"
+                        <p:dataTable id="entrenamientosTable" var="entrenamiento" value="#{entrenamientoController.listarTodoAI()}" paginatorPosition="bottom"
                                      rows="5" paginator="true" 
                                      rowsPerPageTemplate="5,10,15" emptyMessage="No se han creado entrenamientos">
                             <p:column headerText="Nombre" filterBy="#{entrenamiento.nombre}" filterMatchMode="contains">
@@ -26,12 +26,17 @@
                             <p:column headerText="Clasificación" filterBy="#{entrenamiento.clasificacionEntrenamiento.nombre}" filterMatchMode="contains">
                                 <h:outputText value="#{entrenamiento.clasificacionEntrenamiento.nombre}"/>
                             </p:column>
+                            <p:column headerText="Estado" width="10%" filterBy="#{entrenamiento.estado}" filterMatchMode="contains">
+                                <h:outputText value="#{entrenamiento.estado.equals('A')?'Activo':'Inactivo'}"/>
+                            </p:column>
                             <p:column headerText="Acciones" width="10%">
                                 <center>
                                 <p:commandButton actionListener="#{entrenamientoController.setEntrenamiento(entrenamiento)}" oncomplete="PF('entrenamientoDialog').show();"
                                                  update=":dialogForm" title="Editar" icon="fa fa-edit white"/>
+                                <p:commandButton title="Cambiar estado" icon="fa fa-dot-circle-o white" update=":form" actionListener="#{entrenamientoController.cambiarEstado(entrenamiento)}"/>
                                 <p:commandButton title="Eliminar" actionListener="#{entrenamientoController.eliminar(entrenamiento)}" update=":form:msgs, :form:entrenamientosTable" icon="fa fa-trash white">
-                                    <p:confirm header="Confirmación" message="Está seguro que desea eliminar el entrenamiento?" icon="ui-icon-alert" />
+                                    <p:confirm header="Confirmación" message="Está seguro que desea eliminar el entrenamiento?.
+                                               Esta acción también eliminará todos lo resultados de dicho entrenamiento" icon="ui-icon-alert" />
                                 </p:commandButton> 
                                 </center>
                             </p:column>                            

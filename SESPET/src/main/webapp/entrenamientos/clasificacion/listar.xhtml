@@ -12,8 +12,8 @@
                     <h1 class="TexAlCenter Fs18 gray">Clasificacion Entrenamientos</h1>
                     <div class="EmptyBox40"></div>
                     <h:form id="form"> 
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                                  
-                        <p:growl id="msgs" autoUpdate="true"/>    
+                        <p:messages closable="true" id="tempmsgs"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />      
                         <p:commandButton value="Crear nueva clasificacion entrenamiento" actionListener="#{clasificacionEntrenamientoController.limpiar()}"
                                          oncomplete="PF('clasificacionEntrenamientoDialog').show();" update=":dialogForm:panelDialog"/>
                         <p:separator/>
@@ -30,7 +30,7 @@
                                 <center>
                                 <p:commandButton actionListener="#{clasificacionEntrenamientoController.setClasificacionEntrenamiento(clasificacionEntrenamiento)}" oncomplete="PF('clasificacionEntrenamientoDialog').show();"
                                                  update=":dialogForm" title="Editar" icon="fa fa-edit white"/>
-                                <p:commandButton title="Eliminar" actionListener="#{clasificacionEntrenamientoController.eliminar(clasificacionEntrenamiento)}" update=":form:msgs, :form:clasificacionEntrenamientosTable" icon="fa fa-trash white">
+                                <p:commandButton title="Eliminar" actionListener="#{clasificacionEntrenamientoController.eliminar(clasificacionEntrenamiento)}" update=":tempmsgs, :form:clasificacionEntrenamientosTable" icon="fa fa-trash white">
                                     <p:confirm header="Confirmación" message="Está seguro que desea eliminar el clasificacionEntrenamiento?" icon="ui-icon-alert" />
                                 </p:commandButton> 
                                 </center>

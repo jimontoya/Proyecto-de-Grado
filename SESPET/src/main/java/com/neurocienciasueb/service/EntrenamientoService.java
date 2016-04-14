@@ -31,6 +31,10 @@ public class EntrenamientoService implements Serializable, ServicioGenerico<Entr
         return service.findAll();
     }
     
+    public List<Entrenamiento> listarActivos(){
+        return service.findByEstado("A");
+    }
+    
     @Override
     public Entrenamiento guardarOActualizar(Entrenamiento entrenamiento){
         return service.saveAndFlush(entrenamiento);

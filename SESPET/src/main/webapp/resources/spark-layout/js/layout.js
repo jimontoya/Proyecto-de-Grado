@@ -506,8 +506,8 @@ $(function() {
 
 function closeIfSuccess(xhr, status, args, name)
 {
-    if(args.success){
-            PF(name).hide();
+    if(args.success){        
+            PF(name).hide();     
     }
 }
 
@@ -517,3 +517,28 @@ function beginIfSuccess(xhr, status, args, name, tab)
         PF(name).loadStep(tab, true);
     }
 }
+
+function playSound(frequency, gain){
+    instanciateSound();
+
+    oscillator.frequency.value = frequency; // value in hertz
+    gainNode.gain.value = gain;
+
+    oscillator.start(0);
+  }
+  
+
+  
+function instanciateSound(){
+          audioCtx = new (window.AudioContext)();
+          oscillator = audioCtx.createOscillator();
+          gainNode = audioCtx.createGain();
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+
+        }
+        
+  function stopSound(){ oscillator.stop(0); }
+  
+  var audioCtx, oscillator, gainNode;
+  

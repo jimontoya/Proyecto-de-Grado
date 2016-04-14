@@ -8,6 +8,30 @@
     <ui:define name="content">
         
                     <h1 class="BigTopic TexAlCenter">Bienvenido</h1>
+                    
+                     <div id="fb-root"></div>
+                    <script>
+                      window.fbAsyncInit = function() {
+                        FB.init({
+                          appId      : '1.0',
+                          xfbml      : true,
+                          version    : 'v2.5'
+                        });
+                      };
+
+                      (function(d, s, id){
+                         var js, fjs = d.getElementsByTagName(s)[0];
+                         if (d.getElementById(id)) {return;}
+                         js = d.createElement(s); js.id = id;
+                         js.src = "//connect.facebook.net/en_US/sdk.js";
+                         fjs.parentNode.insertBefore(js, fjs);
+                       }(document, 'script', 'facebook-jssdk'));
+                    </script>
+                    <center>
+                    <object data="http://www.uelbosque.edu.co/" width="70%" height="600"> </object>
+                    <div class="fb-page" data-href="https://www.facebook.com/Instituto-Neurociencias-Universidad-el-Bosque-303728416398768" data-height="600" data-tabs="timeline,messages" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"></div>
+                    </center>   
+                    
                     <h:form id="form">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
                         

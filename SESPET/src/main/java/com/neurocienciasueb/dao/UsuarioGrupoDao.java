@@ -5,7 +5,8 @@
  */
 package com.neurocienciasueb.dao;
 
-import com.neurocienciasueb.dto.Entrenamiento;
+import com.neurocienciasueb.dto.UsuarioGrupo;
+import com.neurocienciasueb.dto.UsuarioGrupoId;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface EntrenamientoDao extends JpaRepository<Entrenamiento, Integer>{
+public interface UsuarioGrupoDao extends JpaRepository<UsuarioGrupo, UsuarioGrupoId> {
     
-    List<Entrenamiento> findByEstado(String estado);
+    public List<UsuarioGrupo> findByGrupo(int idGrupo);
 }

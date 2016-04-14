@@ -47,4 +47,9 @@ public class Entrenamiento extends RegularIdEntity implements Serializable{
     @JoinColumn(name = "clasificacion", nullable = false)
     private ClasificacionEntrenamiento clasificacionEntrenamiento;
     
+    @Getter
+    @Setter
+    @Column(name = "estado", nullable = false, length = 1)
+    private String estado;
+    
 }

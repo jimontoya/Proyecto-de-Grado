@@ -64,8 +64,8 @@ public class Usuario implements UserDetails, Serializable{
     
     @Getter
     @Setter
-    @Column(name="telefono",  nullable=true)
-    private int telefono;
+    @Column(name="telefono",  nullable=true, length = 30)
+    private String telefono;
     
     @Getter
     @Setter
@@ -105,7 +105,9 @@ public class Usuario implements UserDetails, Serializable{
         this.userName = us.userName;
     }
 
-    
+    public String getUserName(){
+        return this.userName;
+    }
     
     @Override
     public String getUsername() {

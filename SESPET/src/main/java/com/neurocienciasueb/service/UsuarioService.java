@@ -43,4 +43,12 @@ public class UsuarioService implements Serializable, ServicioGenerico<Usuario>{
     public List<Usuario> findPaciantesByNombreOrDocumento(String busqueda){
         return service.findPaciantesByNombreOrDocumento(busqueda);
     }
+    
+    public boolean existe (String username){
+        return service.findFirstByUserName(username) != null;
+    }
+    
+    public List<Usuario> listarPorRolId(int idRol){
+        return service.findByRolId(idRol);
+    }
 }

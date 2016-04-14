@@ -7,8 +7,12 @@ package com.neurocienciasueb.web.controllers;
 
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.neurocienciasueb.dto.Grupo;
+import com.neurocienciasueb.dto.Usuario;
+import com.neurocienciasueb.dto.UsuarioGrupo;
 import com.neurocienciasueb.service.GrupoService;
+import com.neurocienciasueb.service.UsuarioGrupoService;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +32,16 @@ public class GrupoController extends BaseController implements Serializable{
     @Autowired
     private GrupoService service;
     
+    @Autowired
+    private UsuarioGrupoService usuarioGrupoService;
+    
     private Grupo grupo;
+    
+    private List<Usuario> pacientes;
 
     public GrupoController() {
         this.grupo = new Grupo();
-    }
+    }    
     
     public void limpiar(){
         this.grupo = new Grupo();
@@ -40,6 +49,35 @@ public class GrupoController extends BaseController implements Serializable{
     
     public List<Grupo> listarTodo(){
         return service.listarTodo();
+    }
+    
+    public void inicioAsignarPacientesAGrupo(Grupo g){
+        pacientes = new ArrayList<>();
+        this.grupo = g;
+    }
+    
+    public void asignarPacientesAGrupo(){
+        for(Usuario aux:pacientes){
+            try{
+               UsuarioGrupo us = new UsuarioGrupo();
+                us.setUsuario(aux.getUserName());
+                us.setGrupo(grupo.getId());
+                usuarioGrupoService.guardar(us); 
+            }catch (Exception ex){}            
+        }
+        addMessage("Se han asignado los pacientes", FacesMessage.SEVERITY_INFO);
+    }
+    
+    public void eliminarUsuarioGrupo(Usuario us, Grupo g){
+        UsuarioGrupo aux = new UsuarioGrupo();
+        aux.setGrupo(g.getId());
+        aux.setUsuario(us.getUserName());
+        usuarioGrupoService.eliminar(aux);
+        addMessage("Se ha removido con exito", FacesMessage.SEVERITY_INFO);
+    }
+    
+    public List<Usuario> listarPacientesPorGrupo(int idGrupo){
+        return usuarioGrupoService.listarPacientesPorGrupo(idGrupo);
     }
     
     public void guardarOActualizar(){
@@ -63,6 +101,14 @@ public class GrupoController extends BaseController implements Serializable{
 
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
+    }
+
+    public List<Usuario> getPacientes() {
+        return pacientes;
+    }
+
+    public void setPacientes(List<Usuario> pacientes) {
+        this.pacientes = pacientes;
     }
     
     

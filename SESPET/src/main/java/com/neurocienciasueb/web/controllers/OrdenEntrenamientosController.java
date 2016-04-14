@@ -13,6 +13,7 @@ import com.neurocienciasueb.service.ValorVariableEntrenamientoService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,15 @@ public class OrdenEntrenamientosController extends BaseController implements Ser
     private Usuario pacienteSeleccionado;
     
     private AsignacionEntrenamientoUsuario asignacionEntrenamientoUsuarioSeleccionado;
+    
+    public void eliminarAsignacion(AsignacionEntrenamientoUsuario asignacion){
+        try{
+         asignacionEntrenamientoUsuarioService.eliminar(asignacion);   
+            addMessage("Se ha removido correctamente", FacesMessage.SEVERITY_INFO);
+        }catch(Exception ex){
+            addMessage(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }        
+    }
     
     public void actualizarOrden(){
         asignacionEntrenamientoUsuarioService.guardarOActualizar(asignacionEntrenamientoUsuarioSeleccionado);
