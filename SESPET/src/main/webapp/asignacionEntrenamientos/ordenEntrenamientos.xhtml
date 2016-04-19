@@ -9,7 +9,7 @@
         <div class="layout-portlets-box">
             <div class="Container100">
                 <div class="ContainerIndent">
-                    <h1 class="TexAlCenter Fs18 gray">Orden de entrenamientos</h1>
+                    <h1 class="TexAlCenter Fs18 gray">Orden de actividades</h1>
                     <div class="EmptyBox40"></div>
                     <h:form id="form"> 
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                                 
@@ -22,7 +22,7 @@
                         <p:separator/>
                         <p:dataTable id="entrenamientosTable" var="AsigEntrenamiento" value="#{ordenEntrenamientosController.getAsignacionEntrenamientosPaciente()}" paginatorPosition="bottom"
                                      rows="5" paginator="true" 
-                                     rowsPerPageTemplate="5,10,15" emptyMessage="No se han encontrado entrenamientos">
+                                     rowsPerPageTemplate="5,10,15" emptyMessage="No se han encontrado actividades">
                             <p:column style="width:16px">
                                 <p:rowToggler />
                             </p:column>

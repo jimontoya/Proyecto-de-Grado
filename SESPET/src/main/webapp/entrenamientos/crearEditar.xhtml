@@ -19,10 +19,10 @@
                           
                             <p:outputLabel value="Nombre " for="entrenamientoNombre" />                        
                             <p:inputText id="entrenamientoNombre" value="#{entrenamientoController.entrenamiento.nombre}" 
-                                         required="true" requiredMessage="El entrenamiento debe tener un nombre" style="width: 80%"/>
+                                         required="true" requiredMessage="La actividad debe tener un nombre" style="width: 80%"/>
                             <p:outputLabel value="Instrucciones " for="entrenamientoIns"/>
                             <p:inputTextarea id="entrenamientoIns" value="#{entrenamientoController.entrenamiento.instrucciones}" 
-                                         required="true" requiredMessage="El entrenamiento debe tener instrucciones" style="width: 80%"/> 
+                                         required="true" requiredMessage="La actividad debe tener instrucciones" style="width: 80%"/> 
                             <p:outputLabel value="Código fuente " for="entrenamientoCod"/>
                             <p:scrollPanel style="width:95%;height:150px" >
                                 <p:inputTextarea id="entrenamientoCod"  value="#{entrenamientoController.entrenamiento.codigo}" style="width: 90%;"
@@ -32,7 +32,7 @@
                             
                             <p:outputLabel value="Clasificación " for="clasifMenu"/>
                             <p:selectOneMenu converter="ClasificacionEntrenamientoConverter" value="#{entrenamientoController.entrenamiento.clasificacionEntrenamiento}"
-                                             id="clasifMenu" required="true" requiredMessage="El entrenamiento debe tener una clasificación" style="width: 80%">
+                                             id="clasifMenu" required="true" requiredMessage="La actividad debe tener una clasificación" style="width: 80%">
                                 <f:selectItems value="#{clasificacionEntrenamientoController.listarTodo()}" var="ce" itemLabel="#{ce.nombre}" itemValue="#{ce}"/>                                
                             </p:selectOneMenu>
                         </p:panelGrid>  
@@ -41,7 +41,7 @@
                         <p:panel>
                         <p:dataTable id="variablesTable" var="varent" value="#{entrenamientoController.listarVariableEntrenamientoSeleccionado()}" paginatorPosition="bottom"
                                      rows="5" paginator="true" 
-                                     rowsPerPageTemplate="5,10,15" emptyMessage="No se han creado variables para el entrenamiento">
+                                     rowsPerPageTemplate="5,10,15" emptyMessage="No se han creado variables para la actividad">
                             <p:column headerText="Nombre">
                                 <h:outputText value="#{varent.nombre}"/>
                             </p:column>
@@ -56,6 +56,8 @@
                             </p:column>
                             <p:column style="width: 10%">
                                 <center>
+                                    <p:commandButton actionListener="#{entrenamientoController.setVariableEntrenamiento(varent)}" oncomplete="PF('variableEntrenamientoDialog').show();"
+                                                     update=":variableEntrenamientoDialogForm:panelDialogVE" icon="fa fa-edit white" title="Editar"/>
                                     <p:commandButton title="Eliminar" actionListener="#{entrenamientoController.eliminarVariableEntrenamiento(varent)}" 
                                                      update="variablesTable" icon="fa fa-trash white"/>
                                 </center>

@@ -6,17 +6,21 @@
 package com.neurocienciasueb.web.controllers;
 
 import com.neurocienciasueb.dto.AsignacionEntrenamientoUsuario;
+import com.neurocienciasueb.dto.Grupo;
 import com.neurocienciasueb.dto.Usuario;
 import com.neurocienciasueb.dto.ValorVariableEntrenamiento;
 import com.neurocienciasueb.dto.ValorVariableEntrenamientoDTO;
 import com.neurocienciasueb.dto.VariableEntrenamiento;
 import com.neurocienciasueb.service.AsignacionEntrenamientoUsuarioService;
+import com.neurocienciasueb.service.UsuarioGrupoService;
 import com.neurocienciasueb.service.UsuarioService;
 import com.neurocienciasueb.service.ValorVariableEntrenamientoService;
 import com.neurocienciasueb.service.VariableEntrenamientoService;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.faces.application.FacesMessage;
 import org.primefaces.event.FlowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,20 +49,25 @@ public class AsignacionEntrenamientoController extends BaseController implements
     @Autowired
     private ValorVariableEntrenamientoService valorVariableEntrenamientoService;
     
+    @Autowired
+    private UsuarioGrupoService usuarioGrupoService;
+    
     private String busquedaUsuario;
     
     private int repeticiones=1;
     
     private AsignacionEntrenamientoUsuario asignacionEntrenamientoUsuario;
     
-    private List<Usuario> seleccionadosPacientes;
+    private Grupo grupoSeleccionado;
+    
+    private Set<Usuario> seleccionadosPacientes;
     
     private List<Usuario> pacientesFiltrados;
     
     private List<ValorVariableEntrenamiento> valoresVariablesEntrenamiento;
 
     public AsignacionEntrenamientoController() {
-        seleccionadosPacientes = new ArrayList<>();
+        seleccionadosPacientes = new HashSet<>();
         pacientesFiltrados = new ArrayList<>();
         valoresVariablesEntrenamiento = new ArrayList<>();
         asignacionEntrenamientoUsuario = new AsignacionEntrenamientoUsuario();
@@ -66,6 +75,7 @@ public class AsignacionEntrenamientoController extends BaseController implements
     
     public String onFlowProcess(FlowEvent event) {        
         if(asignacionEntrenamientoUsuario.getEntrenamiento() == null){
+            addMessage("Debe seleccionar una actividad para continuar", FacesMessage.SEVERITY_WARN);
             return "tab1";
         }else{
             if(event.getOldStep().equals("tab1") && event.getNewStep().equals("tab2")){
@@ -87,6 +97,7 @@ public class AsignacionEntrenamientoController extends BaseController implements
             for(Usuario aux:seleccionadosPacientes){
                 asignacionEntrenamientoUsuario.setUsuario(aux);
                 asignacionEntrenamientoUsuario.setRealizado("N");
+                asignacionEntrenamientoUsuario.setOrden(50);
                 asginacAsignacionEntrenamientoUsuarioService.guardarOActualizar(asignacionEntrenamientoUsuario);
                 for(ValorVariableEntrenamiento vve:valoresVariablesEntrenamiento){
                     ValorVariableEntrenamientoDTO vveDTO = new ValorVariableEntrenamientoDTO();
@@ -99,7 +110,7 @@ public class AsignacionEntrenamientoController extends BaseController implements
             }       
             }
             repeticiones = 1;
-            seleccionadosPacientes = new ArrayList<>();
+            seleccionadosPacientes = new HashSet<>();
             addCallbackParam("success", true);
             addMessage("Se ha asignado correctamente", FacesMessage.SEVERITY_INFO);
         }else{
@@ -121,6 +132,10 @@ public class AsignacionEntrenamientoController extends BaseController implements
     public void filtrarPacientesPorNombreODocumento(){
         pacientesFiltrados = usuarioService.findPaciantesByNombreOrDocumento(busquedaUsuario);
     }
+    
+    public void asignarPacientesDeGrupo(){
+        seleccionadosPacientes.addAll(usuarioGrupoService.listarPacientesPorGrupo(grupoSeleccionado.getId()));
+    }
 
     public String getBusquedaUsuario() {
         return busquedaUsuario;
@@ -130,11 +145,11 @@ public class AsignacionEntrenamientoController extends BaseController implements
         this.busquedaUsuario = busquedaUsuario;
     }
 
-    public List<Usuario> getSeleccionadosPacientes() {
+    public Set<Usuario> getSeleccionadosPacientes() {
         return seleccionadosPacientes;
     }
 
-    public void setSeleccionadosPacientes(List<Usuario> seleccionadosPacientes) {
+    public void setSeleccionadosPacientes(Set<Usuario> seleccionadosPacientes) {
         this.seleccionadosPacientes = seleccionadosPacientes;
     }
 
@@ -168,6 +183,14 @@ public class AsignacionEntrenamientoController extends BaseController implements
 
     public void setRepeticiones(int repeticiones) {
         this.repeticiones = repeticiones;
+    }
+
+    public Grupo getGrupoSeleccionado() {
+        return grupoSeleccionado;
+    }
+
+    public void setGrupoSeleccionado(Grupo grupoSeleccionado) {
+        this.grupoSeleccionado = grupoSeleccionado;
     }
     
     

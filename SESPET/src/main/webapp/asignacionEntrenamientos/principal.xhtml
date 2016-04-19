@@ -9,16 +9,16 @@
         <div class="layout-portlets-box">
             <div class="Container100">
                 <div class="ContainerIndent">
-                    <h1 class="TexAlCenter Fs18 gray">Asignación de entrenamientos</h1>
+                    <h1 class="TexAlCenter Fs18 gray">Asignación de actividades</h1>
                     <div class="EmptyBox40"></div>
                     <h:form id="form"> 
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                                 
                         <p:messages id="msgs" autoUpdate="true"/>   
                         <p:wizard backLabel="Anterior" nextLabel="Siguiente" flowListener="#{asignacionEntrenamientoController.onFlowProcess}"
                                   widgetVar="asignacionWizard">
-                            <p:tab title="Seleccionar entrenamiento" id="tab1">
+                            <p:tab title="Seleccionar actividad" id="tab1">
                                 <p:dataTable value="#{entrenamientoController.listarTodo()}" var="entrenamiento"
-                                             emptyMessage="Aún no han encontrado entrenamientos" selectionMode="single" selection="#{asignacionEntrenamientoController.asignacionEntrenamientoUsuario.entrenamiento}"
+                                             emptyMessage="Aún no han creado actividades" selectionMode="single" selection="#{asignacionEntrenamientoController.asignacionEntrenamientoUsuario.entrenamiento}"
                                              rowKey="#{entrenamiento.id}" paginatorPosition="bottom" rows="5" paginator="true" rowsPerPageTemplate="5,10,15">
                                     <p:column headerText="Nombre">
                                         <p:outputLabel value="#{entrenamiento.nombre}"/>
@@ -28,46 +28,58 @@
                                     </p:column>
                                 </p:dataTable>
                             </p:tab>
-                            <p:tab title="Ajustar variables" id="tab2">
+                            <p:tab title="Ajustar variables" id="tab2">   
+                                <center>
+                                <p:panelGrid style="width: 90%;">
                                     <ui:repeat value="#{asignacionEntrenamientoController.valoresVariablesEntrenamiento}"
-                                           var="varEntre">   
-                                        <center>
-                                        <p:separator/>
-                                        <p:outputLabel value="#{varEntre.variableEntrenamiento.nombre}:" style="font-weight: bold !important;"/> 
-                                        <p:spacer width="10"/>
-                                        <p:outputLabel value="#{varEntre.variableEntrenamiento.descripcion}"/> 
-                                        <p:spacer width="10"/>
-                                        
-                                        <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"
-                                                     converterMessage="El valor ingresado debe ser un número entero" 
-                                                     rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('int')}">
-                                            <f:convertNumber integerOnly="true"/>
-                                        </p:inputText>
-                                        
-                                        <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"
-                                                     converterMessage="El valor ingresado debe ser un número" 
-                                                     rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('float')}">
-                                            <f:convertNumber/>
-                                        </p:inputText>
-                                        
-                                        <p:colorPicker value="#{varEntre.valor}" rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('color')}"
-                                                       required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"/>
-                                        
-                                        <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"
-                                                     rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('string')}">
-                                        </p:inputText>
-                                        
-                                        <p:selectOneMenu value="#{varEntre.valor}" rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('bool')}">
-                                            <f:selectItem itemLabel="Sí" itemValue="true"/>
-                                            <f:selectItem itemLabel="No" itemValue="false"/>
-                                        </p:selectOneMenu>
-                                        
-                                        <p:separator/>
-                                        </center>
-                                </ui:repeat>
+                                            var="varEntre"> 
+                                        <p:row>
+                                            <p:column width="25%">
+                                                <p:outputLabel value="#{varEntre.variableEntrenamiento.nombre}:" style="font-weight: bold !important;"/>
+                                            </p:column>
+                                            <p:column style="width: 50%">
+                                                <p:outputLabel value="#{varEntre.variableEntrenamiento.descripcion}"/>
+                                            </p:column>
+                                            <p:column style="width: 25%">
+                                                <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"
+                                                            converterMessage="El valor ingresado debe ser un número entero" 
+                                                            rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('int')}">
+                                                   <f:convertNumber integerOnly="true"/>
+                                               </p:inputText>
+
+                                               <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"
+                                                            converterMessage="El valor ingresado debe ser un número" 
+                                                            rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('float')}">
+                                                   <f:convertNumber/>
+                                               </p:inputText>
+
+                                               <p:colorPicker value="#{varEntre.valor}" rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('color')}"
+                                                              required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"/>
+
+                                               <p:inputText value="#{varEntre.valor}" required="true" requiredMessage="#{varEntre.variableEntrenamiento.nombre} debe tener un valor"
+                                                            rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('string')}">
+                                               </p:inputText>
+
+                                               <p:selectOneMenu value="#{varEntre.valor}" rendered="#{varEntre.variableEntrenamiento.tipoDato.contains('bool')}" style="width: 50px">
+                                                   <f:selectItem itemLabel="Sí" itemValue="true"/>
+                                                   <f:selectItem itemLabel="No" itemValue="false"/>
+                                               </p:selectOneMenu>                                                
+                                            </p:column>                                            
+                                         </p:row>
+                                    </ui:repeat>   
+                                </p:panelGrid>
+                                </center>
                             </p:tab>
-                            <p:tab title="Seleccionar pacientes" id="tab3">                                
-                                <p:commandButton value="Buscar por nombre o documento" onclick="PF('busquedaPacientePorNombreODocumentoDialog').show();"/>
+                            <p:tab title="Seleccionar pacientes" id="tab3">
+                                <p:panelGrid columns="3">
+                                    <p:commandButton value="Buscar por nombre o documento" onclick="PF('busquedaPacientePorNombreODocumentoDialog').show();"/>
+                                    <p:selectOneMenu converter="GrupoConverter" value="#{asignacionEntrenamientoController.grupoSeleccionado}" style="width: 100px">
+                                        <f:selectItems value="#{grupoController.listarTodo()}" var="g" itemLabel="#{g.nombre}" itemValue="#{g}"/>                      
+                                    </p:selectOneMenu>
+                                    <p:commandButton icon="fa fa-user-plus white" value="Seleccionar de grupo" actionListener="#{asignacionEntrenamientoController.asignarPacientesDeGrupo()}"
+                                                     update=":form:seleccionPacientesTable"/>
+
+                                </p:panelGrid>   
                                 <p:separator/>
                                 <p:dataTable value="#{asignacionEntrenamientoController.seleccionadosPacientes}" var="pa"
                                              emptyMessage="Aún no ha seleccionado pacientes" id="seleccionPacientesTable"

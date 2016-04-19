@@ -32,7 +32,7 @@
                         <p:outputLabel value="#{pacienteController.entrenamientoActual.instrucciones}"/>
                         <h:inputHidden id="hiddenButton" value="#{pacienteController.salida}"/>
                         <p:separator/>
-                        <p:commandButton id="botonInicio" type="button" onclick="iniciar();" value="Iniciar" widgetVar="botonInicio" rendered="#{pacienteController.entrenamientoActual!=null}"/>
+                        <p:commandButton id="botonInicio" type="button" onclick="this.style.display = 'none';document.getElementById('myCanvas').focus();iniciar();" value="Iniciar" widgetVar="botonInicio" rendered="#{pacienteController.entrenamientoActual!=null}"/>
                         <br/>
                         <p:separator/>
                         <p:outputLabel escape="false" value="#{pacienteController.codigo()}" rendered="#{pacienteController.entrenamientoActual!=null}"/>

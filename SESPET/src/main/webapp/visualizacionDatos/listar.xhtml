@@ -17,12 +17,12 @@
                         <p:panelGrid columns="6" style="width: 100%; ">             
                             <p:commandButton icon="#{visualizacionDatosController.pacientesSeleccionados?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar pacientes"
                                              onclick="PF('busquedaPacientePorNombreODocumentoDialog').show();"/>
-                            <p:commandButton icon="#{visualizacionDatosController.entrenamientoSeleccionado?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar entrenamiento"
+                            <p:commandButton icon="#{visualizacionDatosController.entrenamientoSeleccionado?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar actividad"
                                              onclick="PF('seleccionEntrenamientoDialog').show();" update=":seleccionEntrenamientoForm:entrenamientosTable"/>                            
-                            <p:commandButton icon="#{visualizacionDatosController.variableEntreadaSeleccionada?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar variables de entrada"
+                            <p:commandButton icon="#{visualizacionDatosController.variableEntreadaSeleccionada?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar variable de entrada"
                                              disabled="#{!visualizacionDatosController.entrenamientoSeleccionado}"
                                              onclick="PF('seleccionVEEDialog').show();" update=":seleccionVEEForm:veTable"/>
-                            <p:commandButton icon="#{visualizacionDatosController.variableSalidaSeleccionada?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar variables de salida"
+                            <p:commandButton icon="#{visualizacionDatosController.variableSalidaSeleccionada?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar variable de salida"
                                              disabled="#{!visualizacionDatosController.entrenamientoSeleccionado}"
                                              onclick="PF('seleccionVESDialog').show();" update=":seleccionVESForm:vsTable"/>
                             <p:inputText value="#{visualizacionDatosController.intervalos}" placeholder="Número de intervalos"
@@ -137,7 +137,7 @@
                                      rowsPerPageTemplate="5,10,15" emptyMessage="No se han creado entrenamientos">
                     <f:facet name="header">
                         <p:outputLabel 
-                            value="Entrenamiento seleccionado #{visualizacionDatosController.entrenamientoSeleccionado? visualizacionDatosController.getEntrenamientoSeleccionado().nombre:'' }"/>
+                            value="Actividad seleccionada #{visualizacionDatosController.entrenamientoSeleccionado? visualizacionDatosController.getEntrenamientoSeleccionado().nombre:'' }"/>
                     </f:facet>
                             <p:column headerText="Nombre" filterBy="#{entrenamiento.nombre}" filterMatchMode="contains">
                                 <h:outputText value="#{entrenamiento.nombre}"/>
