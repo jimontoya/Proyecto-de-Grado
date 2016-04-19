@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -58,3 +59,65 @@
     </h:body>
         
 </html>
+=======
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+            
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Plataforma SESPET</title>
+        <h:outputScript name="js/layout.js" library="spark-layout" />
+            
+        <h:outputText value="&lt;!--[if gte IE 9]&gt;" escape="false" />
+        <style type="text/css">
+            /* styles for IE 9 */
+        </style>
+        <h:outputText value="&lt;![endif]--&gt;" escape="false" />
+            
+        <ui:insert name="head" />
+    </h:head>
+        
+    <h:body>
+        
+        <div id="layout-portlets-cover">
+            <div class="other-pages-box Container40 Responsive50 MarAuto Fnone TexAlCenter ShadowGray MarTop10"
+                 style="margin-top:5%; background-image:url(/Siniestros/resources/spark-layout/images/loginpageillust.png); background-repeat:no-repeat; background-position:center; background-size:cover;">
+                <h:form prependId="false">  
+                    <p:messages id="msgs" closable="true"/>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  
+                    <div class="Container90 Fnone MarAuto TexAlCenter">
+                        <div class="EmptyBox50"></div>
+                        <h:graphicImage name="images/logoInstituto.png" styleClass="Fleft" library="spark-layout" class="MarAuto MarTop20 MarBot10" style="width: 420px;"/>
+                        <div class="EmptyBox20"></div>
+                        <p:inputText value="#{appController.username}" id="username" placeholder="Usuario" styleClass="Container80 Fnone MarAuto Fs18"/>
+                        <div class="EmptyBox10"></div>
+                        <p:password value="#{appController.password}" id="password" placeholder="Password" styleClass="Container80 Fnone MarAuto Fs18" feedback="false"/>
+                        <div class="EmptyBox20"></div>                        
+                        <div class="EmptyBox30"></div>
+                        <p:commandButton action="#{appController.login()}" type="submit" 
+                                         styleClass="Fs16 CarvajalButton" 
+                                         value="Ingresar" ajax="false" update="msgs"/>
+                        <div class="EmptyBox30"></div>                                                
+                        <div class="softgray" style="font-size: 10px;">SESPET - Version #{appController.version}</div>  
+                    </div>
+                </h:form>
+            </div>
+        </div>
+            
+        <h:outputStylesheet name="css/core-layout.css" library="spark-layout" />
+        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout" />
+        <h:outputStylesheet name="css/animate.css" library="spark-layout" />
+        <h:outputStylesheet name="css/spark-layout.css" library="spark-layout" />
+    </h:body>
+        
+</html>
+>>>>>>> 15fc32ced39cf361a80e126b964e70a0fda63d2c

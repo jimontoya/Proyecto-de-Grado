@@ -6,7 +6,9 @@
 package com.neurocienciasueb.service;
 
 import com.neurocienciasueb.dao.UsuarioDao;
+import com.neurocienciasueb.dto.Usuario;
 import java.io.Serializable;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,5 +31,5 @@ public class UserServiceImpl implements UserDetailsService, Serializable
     public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
         UserDetails ud = service.findFirstByUserName(string);
         return ud;
-    }   
+    } 
 }

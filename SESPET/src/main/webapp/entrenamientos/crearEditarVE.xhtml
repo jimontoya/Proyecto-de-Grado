@@ -1,0 +1,80 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ps="http://primefaces.org/spark"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <h:form id="variableEntrenamientoDialogForm">      
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <p:dialog modal="true" widgetVar="variableEntrenamientoDialog" >              
+                        <p:panelGrid columns="2" id="panelDialogVE" style="width: 100%; height: 100%" >                               
+                            <p:outputLabel value="Nombre " for="varEntrenamientoNombre"/>
+                            <p:inputText id="varEntrenamientoNombre" value="#{entrenamientoController.variableEntrenamiento.nombre}" 
+                                         required="true" requiredMessage="La variable debe tener un nombre"/>
+                            <p:outputLabel value="Descripción " for="varEntrenamientoDesc"/>
+                            <p:inputTextarea id="varEntrenamientoDesc" value="#{entrenamientoController.variableEntrenamiento.descripcion}" 
+                                         required="true" requiredMessage="La variable debe tener una descripción"/> 
+                            <p:outputLabel value="Referencia " for="varEntrenamientoRef"/>
+                            <p:inputText id="varEntrenamientoRef" value="#{entrenamientoController.variableEntrenamiento.referencia}" 
+                                         required="true" requiredMessage="La variable debe tener un nombre de referencia"
+                                         /> 
+                            
+                            <p:outputLabel value="Tipo de Variable "/>
+                            <p:selectOneMenu value="#{entrenamientoController.variableEntrenamiento.tipoVariable}" style="width: 90%">
+                                <p:ajax  update="panelDialogVE" />
+                                <f:selectItem itemLabel="Entrada" itemValue='E'/>
+                                <f:selectItem itemLabel="Salida" itemValue="S"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Tipo de Dato "/>
+                            <p:selectOneMenu value="#{entrenamientoController.variableEntrenamiento.tipoDato}" style="width: 90%">
+                                <p:ajax  update="panelDialogVE" />
+                                <f:selectItem itemLabel="Color" itemValue="color"/>
+                                <f:selectItem itemLabel="Entero discreto" itemValue="int-disc"/>
+                                <f:selectItem itemLabel="Entero continuo" itemValue="int-cont"/>
+                                <f:selectItem itemLabel="Decimal discreto" itemValue="float-disc"/>
+                                <f:selectItem itemLabel="Decimal continuo" itemValue="float-cont"/>
+                                <f:selectItem itemLabel="Cadena caracteres" itemValue="string"/>
+                                <f:selectItem itemLabel="Condicional" itemValue="bool"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="Valor por defecto " rendered="#{entrenamientoController.variableEntrenamiento.tipoVariable.equals('E')}"/>                            
+                                             
+                            <p:inputText  value="#{entrenamientoController.variableEntrenamiento.valorDefecto}" required="true" requiredMessage="Debe tener un valor por defecto"
+                                          converterMessage="El valor ingresado debe ser un número entero" style="width: 90%"
+                                                     rendered="#{entrenamientoController.variableEntrenamiento.tipoDato.contains('int') and entrenamientoController.variableEntrenamiento.tipoVariable.equals('E')}" 
+                                                     id="inputInt">
+                                            <f:convertNumber integerOnly="true"/>
+                                        </p:inputText>
+                                        
+                                        <p:inputText  value="#{entrenamientoController.variableEntrenamiento.valorDefecto}" required="true" requiredMessage="Debe tener un valor por defecto"
+                                                     converterMessage="El valor ingresado debe ser un número" style="width: 90%"
+                                                     rendered="#{entrenamientoController.variableEntrenamiento.tipoDato.contains('float') and entrenamientoController.variableEntrenamiento.tipoVariable.equals('E')}" 
+                                                     id="inputFloat">
+                                            <f:convertNumber/>
+                                        </p:inputText>
+                                        
+                                        <p:colorPicker  value="#{entrenamientoController.variableEntrenamiento.valorDefecto}" rendered="#{entrenamientoController.variableEntrenamiento.tipoDato.contains('color') and entrenamientoController.variableEntrenamiento.tipoVariable.equals('E')}"
+                                                        required="true" requiredMessage="Debe tener un valor por defecto" id="inputColor"/>
+                                        
+                                        <p:inputText  value="#{entrenamientoController.variableEntrenamiento.valorDefecto}" required="true" requiredMessage="Debe tener un valor por defecto" style="width: 90%"
+                                                      rendered="#{entrenamientoController.variableEntrenamiento.tipoDato.contains('string') and entrenamientoController.variableEntrenamiento.tipoVariable.equals('E')}" id="inputString">
+                                        </p:inputText>
+                                        
+                                        <p:selectOneMenu  value="#{entrenamientoController.variableEntrenamiento.valorDefecto}" rendered="#{entrenamientoController.variableEntrenamiento.tipoDato.contains('bool') and entrenamientoController.variableEntrenamiento.tipoVariable.equals('E')}"
+                                                          id="inputBool" style="width: 90%">
+                                            <f:selectItem itemLabel="Sí" itemValue="true"/>
+                                            <f:selectItem itemLabel="No" itemValue="false"/>
+                                        </p:selectOneMenu>                            
+                            
+                        </p:panelGrid>                                                  
+            <p:separator/>
+            <center>
+                <p:commandButton title="Guardar" actionListener="#{entrenamientoController.guardarVariableEntrenamiento()}" icon="fa fa-save white"
+                                     update=":dialogForm:variablesTable" oncomplete="closeIfSuccess(xhr, status, args, 'variableEntrenamientoDialog')"/>
+            </center>
+        </p:dialog>
+        </h:form>
+
+</ui:composition>

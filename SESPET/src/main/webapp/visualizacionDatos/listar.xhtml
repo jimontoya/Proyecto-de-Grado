@@ -1,0 +1,207 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/template.xhtml">
+    
+    <ui:define name="content">
+        <div class="layout-portlets-box">
+            <div class="Container100">
+                <div class="ContainerIndent">
+                    <h1 class="TexAlCenter Fs18 gray">Visualización de datos</h1>
+                    <div class="EmptyBox40"></div>
+                    <h:form id="form"> 
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+                        
+                        <p:panelGrid columns="6" style="width: 100%; ">             
+                            <p:commandButton icon="#{visualizacionDatosController.pacientesSeleccionados?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar pacientes"
+                                             onclick="PF('busquedaPacientePorNombreODocumentoDialog').show();"/>
+                            <p:commandButton icon="#{visualizacionDatosController.entrenamientoSeleccionado?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar actividad"
+                                             onclick="PF('seleccionEntrenamientoDialog').show();" update=":seleccionEntrenamientoForm:entrenamientosTable"/>                            
+                            <p:commandButton icon="#{visualizacionDatosController.variableEntreadaSeleccionada?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar variable de entrada"
+                                             disabled="#{!visualizacionDatosController.entrenamientoSeleccionado}"
+                                             onclick="PF('seleccionVEEDialog').show();" update=":seleccionVEEForm:veTable"/>
+                            <p:commandButton icon="#{visualizacionDatosController.variableSalidaSeleccionada?'fa fa-check-square-o white':'fa fa-times white'}" value="Seleccionar variable de salida"
+                                             disabled="#{!visualizacionDatosController.entrenamientoSeleccionado}"
+                                             onclick="PF('seleccionVESDialog').show();" update=":seleccionVESForm:vsTable"/>
+                            <p:inputText value="#{visualizacionDatosController.intervalos}" placeholder="Número de intervalos"
+                                         disabled="#{!visualizacionDatosController.variableSalidaSeleccionada and !visualizacionDatosController.variableEntrenamientoSalida.tipoDato.contains('cont')}"
+                                         title="Intervalos"/>
+                            <p:commandButton icon="fa fa-filter" value="Filtrar"
+                                             disabled="#{!visualizacionDatosController.entrenamientoSeleccionado or !visualizacionDatosController.pacientesSeleccionados or 
+                                                         !visualizacionDatosController.variableEntreadaSeleccionada or !visualizacionDatosController.variableSalidaSeleccionada}"
+                                                         actionListener="#{visualizacionDatosController.filtrar()}" update=":relForm"/>
+                        </p:panelGrid>  
+                        <p:messages closable="true" autoUpdate="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage name="images/engranajes.gif" library="spark-layout"/>
+                        </p:dialog>
+                        
+                        <p:separator/>                 
+                    </h:form>
+                    <h:form id="relForm">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <p:dataTable value="#{visualizacionDatosController.valoresEjeY}" var="y"
+                                       rendered="#{visualizacionDatosController.valoresEjeX!=null and visualizacionDatosController.valoresEjeY!=null}"
+                                       id="relTable" emptyMessage="No se han encontrado resultados" lazy="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{visualizacionDatosController.variableEntrenamientoEntrada.nombre.concat(' - ').
+                                                       concat(visualizacionDatosController.variableEntrenamientoSalida.nombre)}" />
+                            </f:facet>
+                            <p:columns value="#{visualizacionDatosController.valoresEjeX}" var="x">
+                                <f:facet name="header">
+                                    <h:outputText value="#{x}" />
+                                </f:facet>
+                                <p:outputLabel value="#{visualizacionDatosController.dato(x,y)}"/>                                
+                            </p:columns>
+                        </p:dataTable>
+                        <center>
+                            <h:commandLink>
+                                <p:graphicImage name="images/excel.png" library="spark-layout"/>
+                                <p:dataExporter type="xls" target="relTable" fileName="data" />
+                                Exportar a Excel
+                            </h:commandLink>
+                        </center>
+                        
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+    
+    <ui:define name="dialog">
+        <ui:include src="/layout/eliminarConfirmacion.xhtml"/>
+        <h:form id="busquedaPacientePorNombreODocumentoForm">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+            <p:dialog widgetVar="busquedaPacientePorNombreODocumentoDialog" modal="true">
+                <center>
+                <p:inputText id="busqueda" value="#{asignacionEntrenamientoController.busquedaUsuario}"/>
+                <p:spacer width="10"/>
+                <p:commandButton update="pacientesTable" value="Buscar" actionListener="#{asignacionEntrenamientoController.filtrarPacientesPorNombreODocumento()}"
+                                 icon="fa fa-search white"/>
+                </center>
+                <p:separator/>
+                <p:dataTable value="#{asignacionEntrenamientoController.pacientesFiltrados}" var="paciente"
+                             id="pacientesTable" emptyMessage="No se han encontrado pacientes" paginatorPosition="bottom"
+                                     rows="5" paginator="true" rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="Nombre">
+                        <p:outputLabel value="#{paciente.nombreCompleto}"/>
+                    </p:column>
+                    <p:column headerText="Documento">
+                        <p:outputLabel value="#{paciente.documentoIdentidad}"/>
+                    </p:column>  
+                    <p:column style="width: 10%; text-align: center">
+                        <p:commandButton actionListener="#{visualizacionDatosController.getPacientesSeleccionados().add(paciente)}" icon="ui-icon-plus" title="Seleccionar"
+                                         update=":form, :busquedaPacientePorNombreODocumentoForm:pacientesTable2"/>
+                    </p:column>
+                </p:dataTable>
+                <p:separator/>
+                <center>
+                    <p:panelGrid columns="2">
+                        <p:selectOneMenu converter="GrupoConverter" value="#{visualizacionDatosController.grupoSeleccionado}" style="width: 100px">
+                    <f:selectItems value="#{grupoController.listarTodo()}" var="g" itemLabel="#{g.nombre}" itemValue="#{g}"/>                      
+                </p:selectOneMenu>
+                        <p:commandButton icon="fa fa-user-plus white" value="Seleccionar de grupo" actionListener="#{visualizacionDatosController.asignarPacientesDeGrupo()}"
+                                         update=":form, :busquedaPacientePorNombreODocumentoForm:pacientesTable2"/>
+                        
+                    </p:panelGrid>                
+                </center>
+                <p:separator/>
+                <p:dataTable value="#{visualizacionDatosController.getPacientesSeleccionados()}" var="paciente"
+                             id="pacientesTable2" emptyMessage="No se han seleccionado pacientes" paginatorPosition="bottom"
+                                     rows="5" paginator="true" rowsPerPageTemplate="5,10,15">
+                    <f:facet name="header">
+                        <p:outputLabel value="Pacientes seleccionados"/>
+                    </f:facet>
+                    <p:column headerText="Nombre">
+                        <p:outputLabel value="#{paciente.nombreCompleto}"/>
+                    </p:column>
+                    <p:column headerText="Documento">
+                        <p:outputLabel value="#{paciente.documentoIdentidad}"/>
+                    </p:column>  
+                    <p:column style="width: 10%; text-align: center">
+                        <p:commandButton actionListener="#{visualizacionDatosController.getPacientesSeleccionados().remove(paciente)}" icon="fa fa-times white" title="Remover"
+                                         update="pacientesTable2, :form"/>
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
+        </h:form>
+        <h:form id="seleccionEntrenamientoForm">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+            <p:dialog widgetVar="seleccionEntrenamientoDialog" modal="true">
+                <p:dataTable id="entrenamientosTable" var="entrenamiento" value="#{entrenamientoController.listarTodo()}" paginatorPosition="bottom"
+                                     rows="5" paginator="true" 
+                                     rowsPerPageTemplate="5,10,15" emptyMessage="No se han creado entrenamientos">
+                    <f:facet name="header">
+                        <p:outputLabel 
+                            value="Actividad seleccionada #{visualizacionDatosController.entrenamientoSeleccionado? visualizacionDatosController.getEntrenamientoSeleccionado().nombre:'' }"/>
+                    </f:facet>
+                            <p:column headerText="Nombre" filterBy="#{entrenamiento.nombre}" filterMatchMode="contains">
+                                <h:outputText value="#{entrenamiento.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Clasificación" filterBy="#{entrenamiento.clasificacionEntrenamiento.nombre}" filterMatchMode="contains">
+                                <h:outputText value="#{entrenamiento.clasificacionEntrenamiento.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Acciones" width="10%">
+                                <center>
+                                    <p:commandButton actionListener="#{visualizacionDatosController.setEntrenamientoSeleccionado(entrenamiento)}" 
+                                                     update=":form" title="Seleccionar" icon="ui-icon-plus" onclick="PF('seleccionEntrenamientoDialog').hide();" />
+                                </center>
+                            </p:column>                            
+                </p:dataTable>  
+            </p:dialog>
+        </h:form>
+        <h:form id="seleccionVEEForm">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+            <p:dialog widgetVar="seleccionVEEDialog" modal="true">
+                <p:dataTable id="veTable" var="ve" value="#{visualizacionDatosController.variablesEntrenamientoEntrada()}" 
+                                      emptyMessage="No se han encontrado variables de entrada">
+                    <f:facet name="header">
+                        <p:outputLabel 
+                            value="Variable seleccionada #{visualizacionDatosController.variableEntreadaSeleccionada? visualizacionDatosController.variableEntrenamientoEntrada.nombre:'' }"/>
+                    </f:facet>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{ve.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Descripción">
+                                <h:outputText value="#{ve.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Acciones" width="10%">
+                                <center>
+                                    <p:commandButton actionListener="#{visualizacionDatosController.setVariableEntrenamientoEntrada(ve)}" 
+                                                     update=":form" title="Seleccionar" icon="ui-icon-plus" onclick="PF('seleccionVEEDialog').hide();" />
+                                </center>
+                            </p:column>                            
+                </p:dataTable>  
+            </p:dialog>
+        </h:form>
+        <h:form id="seleccionVESForm">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+            <p:dialog widgetVar="seleccionVESDialog" modal="true">
+                <p:dataTable id="vsTable" var="ve" value="#{visualizacionDatosController.variablesEntrenamientoSalida()}" 
+                                      emptyMessage="No se han encontrado variables de salida">
+                    <f:facet name="header">
+                        <p:outputLabel 
+                            value="Variable seleccionada #{visualizacionDatosController.variableSalidaSeleccionada? visualizacionDatosController.variableEntrenamientoSalida.nombre:'' }"/>
+                    </f:facet>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{ve.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Descripción">
+                                <h:outputText value="#{ve.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Acciones" width="10%">
+                                <center>
+                                    <p:commandButton actionListener="#{visualizacionDatosController.setVariableEntrenamientoSalida(ve)}" 
+                                                     update=":form" title="Seleccionar" icon="ui-icon-plus" onclick="PF('seleccionVESDialog').hide();" />
+                                </center>
+                            </p:column>                            
+                </p:dataTable>  
+            </p:dialog>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,77 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ps="http://primefaces.org/spark"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <h:form id="dialogForm">      
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <p:dialog modal="true" widgetVar="entrenamientoDialog" onShow="PF('entrenamientoWizard').loadStep('info', true)"
+                   width="80%">
+            <p:messages autoUpdate="true" closable="true"/>
+                <p:ajax event="close" update=":form"/>
+                <p:wizard flowListener="#{entrenamientoController.onFlowProcess}" nextLabel="Siguiente" backLabel="Anterior" step="info"
+                          widgetVar="entrenamientoWizard">
+                    <p:tab title="Información general" id="info">                   
+                        <p:panelGrid columns="2" id="panelDialog" style="width: 100%; height: 100%" >
+                          
+                            <p:outputLabel value="Nombre " for="entrenamientoNombre" />                        
+                            <p:inputText id="entrenamientoNombre" value="#{entrenamientoController.entrenamiento.nombre}" 
+                                         required="true" requiredMessage="La actividad debe tener un nombre" style="width: 80%"/>
+                            <p:outputLabel value="Instrucciones " for="entrenamientoIns"/>
+                            <p:inputTextarea id="entrenamientoIns" value="#{entrenamientoController.entrenamiento.instrucciones}" 
+                                         required="true" requiredMessage="La actividad debe tener instrucciones" style="width: 80%"/> 
+                            <p:outputLabel value="Código fuente " for="entrenamientoCod"/>
+                            <p:scrollPanel style="width:95%;height:150px" >
+                                <p:inputTextarea id="entrenamientoCod"  value="#{entrenamientoController.entrenamiento.codigo}" style="width: 90%;"
+                                          required="true" requiredMessage="Debe tener un código" />
+                            </p:scrollPanel>
+                            
+                            
+                            <p:outputLabel value="Clasificación " for="clasifMenu"/>
+                            <p:selectOneMenu converter="ClasificacionEntrenamientoConverter" value="#{entrenamientoController.entrenamiento.clasificacionEntrenamiento}"
+                                             id="clasifMenu" required="true" requiredMessage="La actividad debe tener una clasificación" style="width: 80%">
+                                <f:selectItems value="#{clasificacionEntrenamientoController.listarTodo()}" var="ce" itemLabel="#{ce.nombre}" itemValue="#{ce}"/>                                
+                            </p:selectOneMenu>
+                        </p:panelGrid>  
+                    </p:tab>
+                    <p:tab title="Variables" id="vars">
+                        <p:panel>
+                        <p:dataTable id="variablesTable" var="varent" value="#{entrenamientoController.listarVariableEntrenamientoSeleccionado()}" paginatorPosition="bottom"
+                                     rows="5" paginator="true" 
+                                     rowsPerPageTemplate="5,10,15" emptyMessage="No se han creado variables para la actividad">
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{varent.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Referencia">
+                                <h:outputText value="#{varent.referencia}"/>
+                            </p:column>
+                            <p:column headerText="Valor por defecto">
+                                <h:outputText value="#{varent.valorDefecto}"/>
+                            </p:column>
+                            <p:column headerText="Tipo">
+                                <h:outputText value="#{varent.tipoVariable.equals('E')? 'Entrada':'Salida'}"/>
+                            </p:column>
+                            <p:column style="width: 10%">
+                                <center>
+                                    <p:commandButton actionListener="#{entrenamientoController.setVariableEntrenamiento(varent)}" oncomplete="PF('variableEntrenamientoDialog').show();"
+                                                     update=":variableEntrenamientoDialogForm:panelDialogVE" icon="fa fa-edit white" title="Editar"/>
+                                    <p:commandButton title="Eliminar" actionListener="#{entrenamientoController.eliminarVariableEntrenamiento(varent)}" 
+                                                     update="variablesTable" icon="fa fa-trash white"/>
+                                </center>
+                            </p:column>
+                        </p:dataTable>
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Crear nueva variable" actionListener="#{entrenamientoController.limpiarVariableEntrenamiento()}"
+                                         oncomplete="PF('variableEntrenamientoDialog').show();" update=":variableEntrenamientoDialogForm:panelDialogVE"/>
+                            </center>
+                       </p:panel>
+                    </p:tab>
+                </p:wizard>
+        </p:dialog>
+        </h:form>
+
+</ui:composition>

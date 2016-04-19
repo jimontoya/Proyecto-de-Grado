@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:s="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -39,3 +40,51 @@
     
     <beans:bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
 </beans>
+=======
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:s="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:beans="http://www.springframework.org/schema/beans" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+    http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       
+    <tx:annotation-driven />
+    
+    <s:global-method-security pre-post-annotations="enabled" />
+ 	
+    <s:http use-expressions="true" auto-config="true">
+        <s:access-denied-handler error-page="/access-denied.xhtml" />
+        <s:intercept-url pattern="/login.xhtml" access="permitAll" />
+        <s:intercept-url pattern="/grupo/**" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/asignacionEntrenamientos/**" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/entrenamientos/**" access="hasAnyRole('ROLE_Administrador')" />
+        <s:intercept-url pattern="/layout/**" access="isAuthenticated()" />
+        <s:intercept-url pattern="/paciente/**" access="isAuthenticated()" />
+        <s:intercept-url pattern="/visualizacionDatos/**" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/usuario/crearEditar.xhtml" access="hasAnyRole('ROLE_Administrador','ROLE_Investigador')" />
+        <s:intercept-url pattern="/usuario/listar.xhtml" access="hasAnyRole('ROLE_Administrador')" />
+        <s:intercept-url pattern="/usuario/listarPacientes.xhtml" access="hasAnyRole('ROLE_Investigador')" />
+
+        <s:form-login login-page="/login.xhtml" default-target-url="/empty-page.xhtml" authentication-failure-url="/login.xhtml" />            
+        <s:logout logout-success-url="/login.xhtml" delete-cookies="JSESSIONID"
+                      invalidate-session="true"/>
+    </s:http>	
+		
+    <beans:bean class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" id="passwordEncoder"/>
+        
+    <beans:bean id="authenticationProvider" class="com.neurocienciasueb.service.UserServiceImpl" />
+    
+    <s:authentication-manager alias="authenticationManager">            
+        <s:authentication-provider user-service-ref="authenticationProvider">
+            <s:password-encoder ref="passwordEncoder"/>
+        </s:authentication-provider>            
+    </s:authentication-manager>
+    
+    <beans:bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
+</beans>
+>>>>>>> 15fc32ced39cf361a80e126b964e70a0fda63d2c

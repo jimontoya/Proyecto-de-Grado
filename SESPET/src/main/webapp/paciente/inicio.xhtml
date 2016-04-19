@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/template.xhtml">
+    
+    <ui:define name="content">
+        <style type = "text/css">
+      	canvas{ 
+          border:#666 1px solid;
+          padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
+
+      </style>
+        <div class="layout-portlets-box">
+            <div class="Container100">
+                <div class="ContainerIndent">                    
+                    <div class="EmptyBox40"></div>
+                    <h:form id="form" > 
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <h1 class="TexAlCenter Fs18 gray">#{pacienteController.entrenamientoActual!=null?pacienteController.entrenamientoActual.nombre:'Aún no tiene entrenamientos asignados'}</h1>
+                        <f:event type="preRenderView" listener="#{pacienteController.aRealizar()}"/>                        
+                        <p:messages id="msgs" autoUpdate="true"/>   
+                        <p:remoteCommand name="remoteChangeCommand" process="hiddenButton" />
+                        <p:remoteCommand name="terminadoEvaluacion" actionListener="#{pacienteController.terminar()}"/>
+                        <p:remoteCommand name="terminadoEntrenamiento" actionListener="#{pacienteController.terminarEntrenamiento()}"/>
+                        <p:outputLabel value="#{pacienteController.entrenamientoActual.instrucciones}"/>
+                        <h:inputHidden id="hiddenButton" value="#{pacienteController.salida}"/>
+                        <p:separator/>
+                        <p:commandButton id="botonInicio" type="button" onclick="this.style.display = 'none';document.getElementById('myCanvas').focus();iniciar();" value="Iniciar" widgetVar="botonInicio" rendered="#{pacienteController.entrenamientoActual!=null}"/>
+                        <br/>
+                        <p:separator/>
+                        <p:outputLabel escape="false" value="#{pacienteController.codigo()}" rendered="#{pacienteController.entrenamientoActual!=null}"/>
+                    </h:form>
+                                          
+                        
+                         
+                </div>
+            </div>
+        </div>
+    </ui:define>
+    
+    <ui:define name="dialog">
+    </ui:define>
+    
+</ui:composition>
