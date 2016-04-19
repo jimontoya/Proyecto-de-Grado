@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/template.xhtml">
+    
+    <ui:define name="content">
+        <div class="layout-portlets-box">
+            <div class="Container100">
+                <div class="ContainerIndent">
+                    <h1 class="TexAlCenter Fs18 gray">Grupos</h1>
+                    <div class="EmptyBox40"></div>
+                    <h:form id="form"> 
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>                          
+                        <p:growl id="msgs" autoUpdate="true" showDetail="true"/>    
+                        <p:commandButton value="Crear nuevo grupo" actionListener="#{grupoController.limpiar()}"
+                                         oncomplete="PF('grupoDialog').show();" update=":dialogForm:panelDialog"/>
+                        <p:separator/>
+                        <p:dataTable id="gruposTable" var="grupo" value="#{grupoController.listarTodo()}" paginatorPosition="bottom"
+                                     rows="5" paginator="true" 
+                                     rowsPerPageTemplate="5,10,15" emptyMessage="No se han creado grupos">
+                            <p:column headerText="Nombre" filterBy="#{grupo.nombre}" filterMatchMode="contains">
+                                <h:outputText value="#{grupo.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Descripcion" filterBy="#{grupo.descripcion}" filterMatchMode="contains">
+                                <h:outputText value="#{grupo.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Acciones" width="10%">
+                                <center>
+                                <p:commandButton actionListener="#{grupoController.setGrupo(grupo)}" oncomplete="PF('grupoDialog').show();"
+                                                 update=":dialogForm" title="Editar" icon="fa fa-edit white"/>
+                                <p:commandButton title="Eliminar" actionListener="#{grupoController.eliminar(grupo)}" update=":form:msgs, :form:gruposTable" icon="fa fa-trash white">
+                                    <p:confirm header="Confirmación" message="Está seguro que desea eliminar el grupo?" icon="ui-icon-alert" />
+                                </p:commandButton> 
+                                </center>
+                            </p:column>
+                        </p:dataTable>                        
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+    
+    <ui:define name="dialog">
+        <h:form id="dialogForm">      
+            <p:dialog modal="true" widgetVar="grupoDialog">
+            <p:panelGrid columns="2" id="panelDialog">
+                            <p:outputLabel value="Nombre " for="grupoNombre"/>
+                            <p:inputText id="grupoNombre" value="#{grupoController.grupo.nombre}" 
+                                         required="true" requiredMessage="El grupo debe tener un nombre"/>
+                            <p:outputLabel value="Descripción " for="grupoDesc"/>
+                            <p:inputTextarea id="grupoDesc" value="#{grupoController.grupo.descripcion}" 
+                                         required="true" requiredMessage="El grupo debe tener una descripcion"/>                           
+            </p:panelGrid>              
+            <p:separator/>
+            <center>
+                    <p:commandButton title="Guardar" actionListener="#{grupoController.guardarOActualizar()}" icon="fa fa-save white"
+                                     update=":form:gruposTable, :form:msgs, :dialogForm:panelDialog" oncomplete="closeIfSuccess(xhr, status, args, 'grupoDialog')"/>
+            </center>
+        </p:dialog>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>
